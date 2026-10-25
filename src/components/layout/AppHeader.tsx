@@ -96,7 +96,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ targetKB, onSelectSample }
             type="button"
             onClick={toggleTheme}
             aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="p-2 rounded-xl text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+            className="p-2 rounded-xl text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 cursor-pointer"
           >
             {isDark ? (
               <Sun className="w-4 h-4 text-amber-400" />

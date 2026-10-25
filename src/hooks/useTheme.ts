@@ -4,22 +4,32 @@ export type Theme = 'dark' | 'light';
 
 const THEME_STORAGE_KEY = 'xaku-vector-theme';
 
-export function useTheme() {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window === 'undefined') return 'dark';
-    try {
-      const stored = localStorage.getItem(THEME_STORAGE_KEY);
-      if (stored === 'light' || stored === 'dark') {
-        return stored;
-      }
-      if (typeof window.matchMedia === 'function') {
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      }
-      return 'dark';
-    } catch {
-      return 'dark';
+function getSystemTheme(): Theme {
+  if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  return 'dark';
+}
+
+function getInitialTheme(): Theme {
+  if (typeof window === 'undefined') return 'dark';
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    if (stored === 'light' || stored === 'dark') {
+      return stored;
     }
-  });
+    if (typeof document !== 'undefined') {
+      if (document.documentElement.classList.contains('light')) return 'light';
+      if (document.documentElement.classList.contains('dark')) return 'dark';
+    }
+    return getSystemTheme();
+  } catch {
+    return 'dark';
+  }
+}
+
+export function useTheme() {
+  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
 
   const applyTheme = useCallback((newTheme: Theme) => {
     if (typeof document === 'undefined') return;
@@ -34,7 +44,7 @@ export function useTheme() {
     try {
       localStorage.setItem(THEME_STORAGE_KEY, newTheme);
     } catch {
-      // LocalStorage access may fail in restricted iframes
+      // Ignored
     }
   }, []);
 
@@ -47,11 +57,14 @@ export function useTheme() {
   );
 
   const toggleTheme = useCallback(() => {
-    const nextTheme: Theme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(nextTheme);
-  }, [theme, setTheme]);
+    setThemeState((prev) => {
+      const nextTheme = prev === 'dark' ? 'light' : 'dark';
+      applyTheme(nextTheme);
+      return nextTheme;
+    });
+  }, [applyTheme]);
 
-  // Synchronize on mount and handle system preference changes if no manual preference stored
+  // Synchronize on mount and listen to system preference changes
   useEffect(() => {
     applyTheme(theme);
 
