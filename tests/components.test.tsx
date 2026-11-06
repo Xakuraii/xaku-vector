@@ -246,7 +246,7 @@ describe('FileMetrics component', () => {
 });
 
 describe('AppHeader component', () => {
-  it('renders brand logo from favicon.svg, GitHub star link, and navigation links without demo button', () => {
+  it('renders brand logo, links, and toggles mobile hamburger navigation menu', () => {
     render(<AppHeader targetKB={290} />);
 
     const logoImg = screen.getByAltText(/XakuVector Dragon Logo/i);
@@ -257,14 +257,23 @@ describe('AppHeader component', () => {
     expect(screen.getByText('SVG Engine')).toBeInTheDocument();
     expect(screen.getByText(/< 290 KB/i)).toBeInTheDocument();
 
-    // Verify GitHub star link
-    const ghLink = screen.getByRole('link', { name: /Star XakuVector on GitHub/i });
-    expect(ghLink).toBeInTheDocument();
-    expect(ghLink).toHaveAttribute('href', 'https://github.com/Xakuraii/xaku-vector');
-    expect(ghLink).toHaveAttribute('target', '_blank');
-
     // Verify demo button is not rendered
     expect(screen.queryByText(/Demo Logo/i)).not.toBeInTheDocument();
+
+    // Verify mobile hamburger menu button exists and toggles drawer
+    const hamburgerBtn = screen.getByRole('button', { name: /Open navigation menu/i });
+    expect(hamburgerBtn).toBeInTheDocument();
+
+    // Open mobile menu
+    fireEvent.click(hamburgerBtn);
+    expect(screen.getByRole('button', { name: /Close navigation menu/i })).toBeInTheDocument();
+    expect(screen.getByText('Converter Studio')).toBeInTheDocument();
+    expect(screen.getByText('How It Works')).toBeInTheDocument();
+
+    // Click a mobile navigation link to close menu
+    const converterMobileLink = screen.getByText('Converter Studio');
+    fireEvent.click(converterMobileLink);
+    expect(screen.queryByText('Converter Studio')).not.toBeInTheDocument();
   });
 });
 
@@ -348,4 +357,3 @@ describe('AppFooter component', () => {
     expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
   });
 });
-
