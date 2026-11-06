@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { AppLayout } from '../components/layout/AppLayout';
 import { HeroSection } from '../features/converter/components/HeroSection';
 import { UploadDropzone } from '../features/converter/components/UploadDropzone';
@@ -25,7 +25,6 @@ export const App: React.FC = () => {
     isInspectorOpen,
     copySuccess,
     loadUserFile,
-    loadSample,
     removeImage,
     updateSettings,
     reprocess,
@@ -43,15 +42,6 @@ export const App: React.FC = () => {
     onImagePasted: loadUserFile,
   });
 
-  // Load sample emblem on first mount so the application is immediately testable
-  const initialLoadRef = useRef(false);
-  useEffect(() => {
-    if (!initialLoadRef.current) {
-      initialLoadRef.current = true;
-      loadSample();
-    }
-  }, [loadSample]);
-
   const handleHeroConvertClick = () => {
     const dropzone = document.getElementById('converter');
     if (dropzone) {
@@ -67,14 +57,11 @@ export const App: React.FC = () => {
   const isProcessing = status === 'optimizing' || status === 'loading';
 
   return (
-    <AppLayout
-      targetKB={settings.preset === 'unrestricted' ? undefined : settings.targetMaxKB}
-      onSelectSample={loadSample}
-    >
+    <AppLayout targetKB={settings.preset === 'unrestricted' ? undefined : settings.targetMaxKB}>
       <div id="top" />
 
       {/* Hero Section */}
-      <HeroSection onConvertClick={handleHeroConvertClick} onSampleClick={loadSample} />
+      <HeroSection onConvertClick={handleHeroConvertClick} />
 
       {/* Upload Dropzone */}
       <UploadDropzone
@@ -89,11 +76,7 @@ export const App: React.FC = () => {
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column: Settings and Output Actions (5 columns on large screens) */}
         <div className="lg:col-span-5 space-y-6">
-          <ConversionSettings
-            settings={settings}
-            onChange={updateSettings}
-            disabled={isProcessing}
-          />
+          <ConversionSettings settings={settings} onChange={updateSettings} disabled={false} />
 
           <OutputActions
             result={result}

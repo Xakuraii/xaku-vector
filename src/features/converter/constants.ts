@@ -11,6 +11,12 @@ export const PRESET_OPTIONS: {
   targetKB: number;
 }[] = [
   {
+    id: 50,
+    label: '< 50 KB',
+    sublabel: 'Compact / Min',
+    targetKB: 48,
+  },
+  {
     id: 150,
     label: '< 150 KB',
     sublabel: 'Ultra Small',

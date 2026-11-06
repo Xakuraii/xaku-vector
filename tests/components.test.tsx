@@ -5,6 +5,9 @@ import { UploadDropzone } from '../src/features/converter/components/UploadDropz
 import { ConversionSettings } from '../src/features/converter/components/ConversionSettings';
 import { OutputActions } from '../src/features/converter/components/OutputActions';
 import { FileMetrics } from '../src/features/converter/components/FileMetrics';
+import { AppHeader } from '../src/components/layout/AppHeader';
+import { AppFooter } from '../src/components/layout/AppFooter';
+import { HeroSection } from '../src/features/converter/components/HeroSection';
 import { DEFAULT_SETTINGS } from '../src/features/converter/constants';
 import { ImageSourceData, OptimizationResult } from '../src/features/converter/types';
 
@@ -62,14 +65,24 @@ describe('UploadDropzone component', () => {
 });
 
 describe('ConversionSettings component', () => {
-  it('renders size presets and responds to preset selection', () => {
+  it('renders size presets including < 50 KB and responds to preset selection', () => {
     const handleChange = vi.fn();
     render(<ConversionSettings settings={DEFAULT_SETTINGS} onChange={handleChange} />);
 
+    expect(screen.getByText('< 50 KB')).toBeInTheDocument();
     expect(screen.getByText('< 150 KB')).toBeInTheDocument();
     expect(screen.getByText('< 300 KB')).toBeInTheDocument();
     expect(screen.getByText('< 500 KB')).toBeInTheDocument();
     expect(screen.getByText('Max Quality')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('< 50 KB'));
+    expect(handleChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        preset: 50,
+        targetMaxKB: 48,
+        mode: 'auto',
+      })
+    );
 
     fireEvent.click(screen.getByText('< 150 KB'));
     expect(handleChange).toHaveBeenCalledWith(
@@ -79,6 +92,21 @@ describe('ConversionSettings component', () => {
         mode: 'auto',
       })
     );
+  });
+
+  it('keeps fine-tune slider visible and displays a warning when moved to max limit', () => {
+    const handleChange = vi.fn();
+    render(
+      <ConversionSettings
+        settings={{ ...DEFAULT_SETTINGS, targetMaxKB: 800 }}
+        onChange={handleChange}
+      />
+    );
+
+    const slider = screen.getByLabelText(/Target maximum file size in kilobytes/i);
+    expect(slider).toBeInTheDocument();
+    expect(slider).not.toBeDisabled();
+    expect(screen.getByText(/Maximum slider limit reached \(800 KB\)/i)).toBeInTheDocument();
   });
 
   it('toggles manual mode and reveals manual quality and scale sliders', () => {
@@ -216,3 +244,108 @@ describe('FileMetrics component', () => {
     expect(screen.getByText(/Under 290 KB Target/i)).toBeInTheDocument();
   });
 });
+
+describe('AppHeader component', () => {
+  it('renders brand logo from favicon.svg, GitHub star link, and navigation links without demo button', () => {
+    render(<AppHeader targetKB={290} />);
+
+    const logoImg = screen.getByAltText(/XakuVector Dragon Logo/i);
+    expect(logoImg).toBeInTheDocument();
+    expect(logoImg).toHaveAttribute('src', '/favicon.svg');
+    expect(screen.getByText('Xaku')).toBeInTheDocument();
+    expect(screen.getByText('Vector')).toBeInTheDocument();
+    expect(screen.getByText('SVG Engine')).toBeInTheDocument();
+    expect(screen.getByText(/< 290 KB/i)).toBeInTheDocument();
+
+    // Verify GitHub star link
+    const ghLink = screen.getByRole('link', { name: /Star XakuVector on GitHub/i });
+    expect(ghLink).toBeInTheDocument();
+    expect(ghLink).toHaveAttribute('href', 'https://github.com/Xakuraii/xaku-vector');
+    expect(ghLink).toHaveAttribute('target', '_blank');
+
+    // Verify demo button is not rendered
+    expect(screen.queryByText(/Demo Logo/i)).not.toBeInTheDocument();
+  });
+});
+
+describe('HeroSection component', () => {
+  it('renders clean headline, description, GitHub star button, and primary CTA without sample button', () => {
+    const handleConvert = vi.fn();
+    render(<HeroSection onConvertClick={handleConvert} />);
+
+    expect(screen.getByText(/Package Images into SVG./i)).toBeInTheDocument();
+    expect(screen.getByText(/With Strict Size Control./i)).toBeInTheDocument();
+    expect(screen.queryByText(/Try with sample logo/i)).not.toBeInTheDocument();
+
+    const convertBtn = screen.getByRole('button', { name: /Select or drop an image/i });
+    expect(convertBtn).toBeInTheDocument();
+    fireEvent.click(convertBtn);
+    expect(handleConvert).toHaveBeenCalled();
+
+    const ghHeroLink = screen.getByTitle(/Star XakuVector on GitHub/i);
+    expect(ghHeroLink).toHaveAttribute('href', 'https://github.com/Xakuraii/xaku-vector');
+  });
+});
+
+describe('AppFooter component', () => {
+  it('renders branding, open-source card, GitHub links, author credit, and back-to-top button', () => {
+    // Mock window.scrollTo
+    window.scrollTo = vi.fn();
+
+    render(<AppFooter />);
+
+    // Brand and logo
+    const logoImg = screen.getByAltText(/XakuVector Dragon Logo/i);
+    expect(logoImg).toBeInTheDocument();
+    expect(logoImg).toHaveAttribute('src', '/favicon.svg');
+    expect(screen.getByText('v1.0.0')).toBeInTheDocument();
+
+    // Open source GitHub card
+    expect(screen.getByText(/XakuVector is 100% free & open source/i)).toBeInTheDocument();
+    const starBtn = screen.getByRole('link', { name: /Star XakuVector on GitHub/i });
+    expect(starBtn).toHaveAttribute('href', 'https://github.com/Xakuraii/xaku-vector');
+
+    // Author credit
+    const authorLinks = screen.getAllByRole('link', { name: /Xakuraii/i });
+    expect(authorLinks.length).toBeGreaterThanOrEqual(1);
+    expect(authorLinks[0]).toHaveAttribute('href', 'https://github.com/Xakuraii');
+
+    // Scroll to top
+    const topBtn = screen.getByRole('button', { name: /Scroll back to top of page/i });
+    expect(topBtn).toBeInTheDocument();
+    fireEvent.click(topBtn);
+    expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
+  });
+});
+
+describe('AppFooter component', () => {
+  it('renders branding, open-source card, GitHub links, author credit, and back-to-top button', () => {
+    // Mock window.scrollTo
+    window.scrollTo = vi.fn();
+
+    render(<AppFooter />);
+
+    // Brand and logo
+    const logoImg = screen.getByAltText(/XakuVector Dragon Logo/i);
+    expect(logoImg).toBeInTheDocument();
+    expect(logoImg).toHaveAttribute('src', '/favicon.svg');
+    expect(screen.getByText('v1.0.0')).toBeInTheDocument();
+
+    // Open source GitHub card
+    expect(screen.getByText(/XakuVector is 100% free & open source/i)).toBeInTheDocument();
+    const starBtn = screen.getByRole('link', { name: /Star XakuVector on GitHub/i });
+    expect(starBtn).toHaveAttribute('href', 'https://github.com/Xakuraii/xaku-vector');
+
+    // Author credit
+    const authorLinks = screen.getAllByRole('link', { name: /Xakuraii/i });
+    expect(authorLinks.length).toBeGreaterThanOrEqual(1);
+    expect(authorLinks[0]).toHaveAttribute('href', 'https://github.com/Xakuraii');
+
+    // Scroll to top
+    const topBtn = screen.getByRole('button', { name: /Scroll back to top of page/i });
+    expect(topBtn).toBeInTheDocument();
+    fireEvent.click(topBtn);
+    expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
+  });
+});
+

@@ -2,7 +2,7 @@ export type SupportedMimeType = 'image/png' | 'image/webp' | 'image/jpeg';
 
 export type OutputFormat = 'image/webp' | 'image/png';
 
-export type OptimizationPreset = 150 | 300 | 500 | 'unrestricted';
+export type OptimizationPreset = 50 | 150 | 300 | 500 | 'unrestricted';
 
 export interface ImageSourceData {
   file: File | null;

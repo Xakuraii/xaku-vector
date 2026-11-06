@@ -7,6 +7,7 @@
     --font-sans:
       'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --brand-red: #dc2626;
   }
 
   body {
@@ -77,9 +78,65 @@
     linear-gradient(-45deg, transparent 75%, #1e1e24 75%);
 }
 
-/* Range input accent styling */
+/* Range input styling: buttery smooth, easy to grab and drag */
 input[type='range'] {
   accent-color: #dc2626;
+  cursor: grab;
+  touch-action: pan-x;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+input[type='range']:active {
+  cursor: grabbing;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #dc2626;
+  border: 2.5px solid #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  cursor: grab;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+input[type='range']:active::-webkit-slider-thumb {
+  cursor: grabbing;
+  transform: scale(1.15);
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.5);
+}
+
+.dark input[type='range']::-webkit-slider-thumb {
+  border-color: #18181b;
+}
+
+input[type='range']::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #dc2626;
+  border: 2.5px solid #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  cursor: grab;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+input[type='range']:active::-moz-range-thumb {
+  cursor: grabbing;
+  transform: scale(1.15);
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.5);
+}
+
+.dark input[type='range']::-moz-range-thumb {
+  border-color: #18181b;
 }
 
 /* Subtle scrollbars */

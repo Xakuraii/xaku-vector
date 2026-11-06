@@ -135,12 +135,12 @@ export async function optimizeImageToSvg(
     if (fullResCandidate.byteLength <= targetBytes) {
       bestCandidate = fullResCandidate;
     } else {
-      // Step 2: Binary search quality between 0.40 and 0.98 at 100% scale (8 iterations)
+      // Step 2: Binary search quality between 0.40 and 0.98 at 100% scale (5 iterations for optimal performance)
       let lowQ = 0.4;
       let highQ = 0.98;
       let bestAtFullRes: CandidateEncoding | null = null;
 
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < 5; i++) {
         const midQ = (lowQ + highQ) / 2;
         const candidate = encodeCandidate(source, 1.0, midQ, 'image/webp', sharedCanvas);
 
@@ -155,12 +155,12 @@ export async function optimizeImageToSvg(
       if (bestAtFullRes) {
         bestCandidate = bestAtFullRes;
       } else {
-        // Step 3: Resolution scaling needed (e.g. ultra tight size budget)
-        let lowS = 0.2;
+        // Step 3: Resolution scaling needed (e.g. ultra tight size budget like <50 KB)
+        let lowS = 0.1;
         let highS = 0.95;
         let bestScaled: CandidateEncoding | null = null;
 
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 5; i++) {
           const midS = (lowS + highS) / 2;
           const candidate = encodeCandidate(source, midS, 0.8, 'image/webp', sharedCanvas);
 
@@ -172,9 +172,8 @@ export async function optimizeImageToSvg(
           }
         }
 
-        // If target was extraordinarily small and even scale 0.2 exceeded, fallback to minimum
-        bestCandidate =
-          bestScaled || encodeCandidate(source, 0.15, 0.6, 'image/webp', sharedCanvas);
+        // Fallback for compact targets
+        bestCandidate = bestScaled || encodeCandidate(source, 0.1, 0.5, 'image/webp', sharedCanvas);
       }
     }
   } else {
@@ -185,11 +184,11 @@ export async function optimizeImageToSvg(
     if (fullPng.byteLength <= targetBytes) {
       bestCandidate = fullPng;
     } else {
-      let lowS = 0.15;
+      let lowS = 0.1;
       let highS = 0.98;
       let bestPng: CandidateEncoding | null = null;
 
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < 5; i++) {
         const midS = (lowS + highS) / 2;
         const candidate = encodeCandidate(source, midS, 1.0, 'image/png', sharedCanvas);
 
@@ -201,7 +200,7 @@ export async function optimizeImageToSvg(
         }
       }
 
-      bestCandidate = bestPng || encodeCandidate(source, 0.15, 1.0, 'image/png', sharedCanvas);
+      bestCandidate = bestPng || encodeCandidate(source, 0.1, 1.0, 'image/png', sharedCanvas);
     }
   }
 

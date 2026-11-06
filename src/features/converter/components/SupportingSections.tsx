@@ -113,7 +113,7 @@ export const SupportingSections: React.FC = () => {
 
       {/* 3. Privacy & Client-Side Guarantee */}
       <section className="space-y-4">
-        <Card className="p-6 sm:p-8 bg-gradient-to-br from-zinc-50 to-emerald-50/20 dark:from-zinc-900/90 dark:to-emerald-950/10 border border-zinc-200 dark:border-zinc-800 space-y-3">
+        <Card className="p-6 sm:p-8 bg-zinc-50/80 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 space-y-3">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-emerald-500" />
             <h2 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-white">
@@ -169,9 +169,9 @@ export const SupportingSections: React.FC = () => {
               Can I control the SVG file size?
             </h3>
             <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Yes. You can choose from presets (&lt;150 KB, &lt;300 KB, &lt;500 KB) or use the
-              fine-tune slider. The auto-optimizer iteratively calculates the best quality to stay
-              strictly under that limit.
+              Yes. You can choose from presets (&lt;50 KB, &lt;150 KB, &lt;300 KB, &lt;500 KB) or
+              use the fine-tune slider (from 20 KB up to 800 KB). The auto-optimizer iteratively
+              calculates the best quality to stay strictly under that limit.
             </p>
           </Card>
 

@@ -175,9 +175,7 @@ export const FileMetrics: React.FC<FileMetricsProps> = ({ sourceImage, result, s
           >
             <div
               className={`h-full rounded-full transition-all duration-300 ${
-                isTargetMet
-                  ? 'bg-gradient-to-r from-emerald-500 to-emerald-400'
-                  : 'bg-gradient-to-r from-amber-500 to-red-500'
+                isTargetMet ? 'bg-emerald-500' : 'bg-red-600'
               }`}
               style={{ width: `${Math.min(100, budgetRatio)}%` }}
             />
