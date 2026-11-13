@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Sun,
-  Moon,
   Star,
   Menu,
   X,
@@ -12,13 +10,14 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
+import { AnimatedThemeToggler } from '../ui/AnimatedThemeToggler';
 
 interface AppHeaderProps {
   targetKB?: number;
 }
 
-export const AppHeader: React.FC<AppHeaderProps> = ({ targetKB }) => {
-  const { isDark, toggleTheme } = useTheme();
+const AppHeaderComponent: React.FC<AppHeaderProps> = ({ targetKB }) => {
+  const { theme, setTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const closeMobileMenu = () => {
@@ -65,6 +64,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ targetKB }) => {
             <img
               src="/favicon.svg"
               alt="XakuVector Dragon Logo"
+              width={44}
+              height={44}
+              decoding="async"
               className="w-full h-full object-contain select-none transition-transform duration-300 group-hover:scale-105"
             />
           </div>
@@ -150,18 +152,13 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ targetKB }) => {
           </a>
 
           {/* Theme Toggle Button */}
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+          <AnimatedThemeToggler
+            variant="circle"
+            duration={400}
+            theme={theme}
+            onThemeChange={setTheme}
             className="p-2 sm:p-2.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 cursor-pointer shadow-xs hover:scale-105 active:scale-95"
-          >
-            {isDark ? (
-              <Sun className="w-4 h-4 text-amber-400" />
-            ) : (
-              <Moon className="w-4 h-4 text-zinc-700" />
-            )}
-          </button>
+          />
 
           {/* Mobile Hamburger Toggle Button */}
           <button
@@ -252,3 +249,5 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ targetKB }) => {
     </header>
   );
 };
+
+export const AppHeader = React.memo(AppHeaderComponent);

@@ -15,6 +15,7 @@ export function loadImageFromFile(file: File): Promise<ImageSourceData> {
 
     const objectUrl = URL.createObjectURL(file);
     const img = new Image();
+    img.decoding = 'async';
 
     img.onload = () => {
       const width = img.naturalWidth || img.width;
@@ -26,37 +27,19 @@ export function loadImageFromFile(file: File): Promise<ImageSourceData> {
         return;
       }
 
-      // Also read as dataUrl for preview and canvas operations
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const dataUrl = (e.target?.result as string) || objectUrl;
-        resolve({
-          file,
-          name: sanitizeBaseFilename(file.name),
-          byteLength: file.size,
-          mimeType: file.type || 'image/png',
-          width,
-          height,
-          dataUrl,
-          objectUrl,
-          imageElement: img,
-        });
-      };
-      reader.onerror = () => {
-        // Fallback to objectUrl
-        resolve({
-          file,
-          name: sanitizeBaseFilename(file.name),
-          byteLength: file.size,
-          mimeType: file.type || 'image/png',
-          width,
-          height,
-          dataUrl: objectUrl,
-          objectUrl,
-          imageElement: img,
-        });
-      };
-      reader.readAsDataURL(file);
+      // Reuse the object URL for the preview stage. Reading the file a second
+      // time as a multi-megabyte base64 data URL wastes memory and CPU.
+      resolve({
+        file,
+        name: sanitizeBaseFilename(file.name),
+        byteLength: file.size,
+        mimeType: file.type || 'image/png',
+        width,
+        height,
+        dataUrl: objectUrl,
+        objectUrl,
+        imageElement: img,
+      });
     };
 
     img.onerror = () => {

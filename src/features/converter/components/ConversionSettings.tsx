@@ -11,7 +11,7 @@ interface ConversionSettingsProps {
   disabled?: boolean;
 }
 
-export const ConversionSettings: React.FC<ConversionSettingsProps> = ({
+const ConversionSettingsComponent: React.FC<ConversionSettingsProps> = ({
   settings,
   onChange,
   disabled = false,
@@ -250,7 +250,7 @@ export const ConversionSettings: React.FC<ConversionSettingsProps> = ({
           />
         </div>
 
-        <div className="flex justify-between text-[10px] font-mono text-zinc-400 dark:text-zinc-500">
+        <div className="flex justify-between text-[10px] font-mono text-zinc-500 dark:text-zinc-400">
           <span className="text-emerald-600 dark:text-emerald-400 font-semibold">20 KB (Min)</span>
           <span>50 KB</span>
           <span>150 KB</span>
@@ -378,7 +378,7 @@ export const ConversionSettings: React.FC<ConversionSettingsProps> = ({
                 />
               </div>
               {!isWebp && (
-                <p className="text-[10px] text-zinc-400 mt-0.5">
+                <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
                   PNG format does not support lossy quality reduction; quality is fixed at 100%.
                 </p>
               )}
@@ -416,3 +416,5 @@ export const ConversionSettings: React.FC<ConversionSettingsProps> = ({
     </Card>
   );
 };
+
+export const ConversionSettings = React.memo(ConversionSettingsComponent);

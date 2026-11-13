@@ -10,7 +10,7 @@ interface FileMetricsProps {
   settings: ConversionSettingsState;
 }
 
-export const FileMetrics: React.FC<FileMetricsProps> = ({ sourceImage, result, settings }) => {
+const FileMetricsComponent: React.FC<FileMetricsProps> = ({ sourceImage, result, settings }) => {
   if (!sourceImage || !result) {
     return (
       <Card className="p-4 sm:p-5">
@@ -22,7 +22,9 @@ export const FileMetrics: React.FC<FileMetricsProps> = ({ sourceImage, result, s
             <div className="text-lg font-bold font-mono text-zinc-400 dark:text-zinc-600 mt-1">
               —
             </div>
-            <div className="text-[10px] text-zinc-400 mt-0.5">Awaiting input</div>
+            <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+              Awaiting input
+            </div>
           </div>
           <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/60 dark:border-zinc-800">
             <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
@@ -31,7 +33,9 @@ export const FileMetrics: React.FC<FileMetricsProps> = ({ sourceImage, result, s
             <div className="text-lg font-bold font-mono text-zinc-400 dark:text-zinc-600 mt-1">
               —
             </div>
-            <div className="text-[10px] text-zinc-400 mt-0.5">Awaiting input</div>
+            <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+              Awaiting input
+            </div>
           </div>
           <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/60 dark:border-zinc-800">
             <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
@@ -40,7 +44,9 @@ export const FileMetrics: React.FC<FileMetricsProps> = ({ sourceImage, result, s
             <div className="text-lg font-bold font-mono text-zinc-400 dark:text-zinc-600 mt-1">
               —
             </div>
-            <div className="text-[10px] text-zinc-400 mt-0.5">Awaiting input</div>
+            <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+              Awaiting input
+            </div>
           </div>
           <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/60 dark:border-zinc-800">
             <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
@@ -49,7 +55,9 @@ export const FileMetrics: React.FC<FileMetricsProps> = ({ sourceImage, result, s
             <div className="text-lg font-bold font-mono text-zinc-400 dark:text-zinc-600 mt-1">
               —
             </div>
-            <div className="text-[10px] text-zinc-400 mt-0.5">Awaiting input</div>
+            <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+              Awaiting input
+            </div>
           </div>
         </div>
       </Card>
@@ -75,7 +83,7 @@ export const FileMetrics: React.FC<FileMetricsProps> = ({ sourceImage, result, s
             Generated .SVG Size
           </span>
           <div
-            className={`text-lg sm:text-xl font-extrabold font-mono mt-0.5 ${
+            className={`text-2xl sm:text-3xl font-extrabold font-mono tracking-tight mt-0.5 ${
               isTargetMet
                 ? 'text-emerald-600 dark:text-emerald-400'
                 : 'text-amber-600 dark:text-amber-400'
@@ -185,3 +193,5 @@ export const FileMetrics: React.FC<FileMetricsProps> = ({ sourceImage, result, s
     </Card>
   );
 };
+
+export const FileMetrics = React.memo(FileMetricsComponent);

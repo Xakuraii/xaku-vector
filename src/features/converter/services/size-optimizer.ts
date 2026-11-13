@@ -17,31 +17,63 @@ interface CandidateEncoding {
 }
 
 /**
+ * WebP canvas support never changes at runtime, so probe it once instead of
+ * re-encoding a throwaway canvas for every optimization candidate.
+ */
+let webpSupportCache: boolean | null = null;
+
+/**
  * Checks whether the current browser environment genuinely supports WebP export in canvas.
  */
 export function isWebpSupportedInCanvas(): boolean {
+  if (webpSupportCache !== null) return webpSupportCache;
   if (typeof document === 'undefined') return false;
   try {
     const canvas = document.createElement('canvas');
     canvas.width = 1;
     canvas.height = 1;
     const dataUrl = canvas.toDataURL('image/webp');
-    return dataUrl.startsWith('data:image/webp');
+    webpSupportCache = dataUrl.startsWith('data:image/webp');
   } catch {
-    return false;
+    webpSupportCache = false;
+  }
+  return webpSupportCache;
+}
+
+/**
+ * Lets the browser paint between expensive canvas encodes so the UI stays
+ * responsive while a large image is being optimized.
+ */
+function yieldToBrowser(): Promise<void> {
+  return new Promise((resolve) => {
+    if (typeof requestAnimationFrame === 'function') {
+      requestAnimationFrame(() => resolve());
+    } else {
+      setTimeout(resolve, 0);
+    }
+  });
+}
+
+function throwIfCancelled(isCancelled?: () => boolean): void {
+  if (isCancelled?.()) {
+    const error = new Error('Optimization superseded by a newer request');
+    error.name = 'AbortError';
+    throw error;
   }
 }
 
 /**
  * Encodes the source image to a specific resolution scale and quality,
  * packaging it into SVG XML and calculating exact byte size.
+ * Allows reusing existing canvas pixel contents when resolution scale has not changed.
  */
 export function encodeCandidate(
   source: ImageSourceData,
   scale: number,
   quality: number,
   requestedFormat: OutputFormat,
-  canvas?: HTMLCanvasElement
+  canvas?: HTMLCanvasElement,
+  reuseExistingCanvasContent = false
 ): CandidateEncoding {
   const effectiveScale = Math.max(0.1, Math.min(1.0, scale));
   const effectiveQuality = Math.max(0.1, Math.min(1.0, quality));
@@ -54,18 +86,23 @@ export function encodeCandidate(
     throw new Error('Canvas element is unavailable for image encoding');
   }
 
-  cvs.width = targetWidth;
-  cvs.height = targetHeight;
-  const ctx = cvs.getContext('2d');
-  if (!ctx) {
-    throw new Error('2D context could not be acquired');
+  const needsRedraw =
+    !reuseExistingCanvasContent || cvs.width !== targetWidth || cvs.height !== targetHeight;
+
+  if (needsRedraw) {
+    cvs.width = targetWidth;
+    cvs.height = targetHeight;
+    const ctx = cvs.getContext('2d');
+    if (!ctx) {
+      throw new Error('2D context could not be acquired');
+    }
+
+    ctx.clearRect(0, 0, targetWidth, targetHeight);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+
+    ctx.drawImage(source.imageElement, 0, 0, targetWidth, targetHeight);
   }
-
-  ctx.clearRect(0, 0, targetWidth, targetHeight);
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'high';
-
-  ctx.drawImage(source.imageElement, 0, 0, targetWidth, targetHeight);
 
   // Check actual format support
   let mimeToUse: OutputFormat = requestedFormat;
@@ -109,12 +146,17 @@ export function encodeCandidate(
  */
 export async function optimizeImageToSvg(
   source: ImageSourceData,
-  settings: ConversionSettingsState
+  settings: ConversionSettingsState,
+  isCancelled?: () => boolean
 ): Promise<OptimizationResult> {
   const startTime = performance.now();
   const targetBytes = settings.targetMaxKB * 1024;
   const sharedCanvas =
     typeof document !== 'undefined' ? document.createElement('canvas') : undefined;
+
+  // Hand control back to the browser first so the "optimizing" state can paint.
+  await yieldToBrowser();
+  throwIfCancelled(isCancelled);
 
   let bestCandidate: CandidateEncoding;
 
@@ -141,8 +183,12 @@ export async function optimizeImageToSvg(
       let bestAtFullRes: CandidateEncoding | null = null;
 
       for (let i = 0; i < 5; i++) {
+        await yieldToBrowser();
+        throwIfCancelled(isCancelled);
+
         const midQ = (lowQ + highQ) / 2;
-        const candidate = encodeCandidate(source, 1.0, midQ, 'image/webp', sharedCanvas);
+        // Re-use already drawn 1.0-scale canvas buffer without re-drawing
+        const candidate = encodeCandidate(source, 1.0, midQ, 'image/webp', sharedCanvas, true);
 
         if (candidate.byteLength <= targetBytes) {
           bestAtFullRes = candidate;
@@ -161,6 +207,9 @@ export async function optimizeImageToSvg(
         let bestScaled: CandidateEncoding | null = null;
 
         for (let i = 0; i < 5; i++) {
+          await yieldToBrowser();
+          throwIfCancelled(isCancelled);
+
           const midS = (lowS + highS) / 2;
           const candidate = encodeCandidate(source, midS, 0.8, 'image/webp', sharedCanvas);
 
@@ -189,6 +238,9 @@ export async function optimizeImageToSvg(
       let bestPng: CandidateEncoding | null = null;
 
       for (let i = 0; i < 5; i++) {
+        await yieldToBrowser();
+        throwIfCancelled(isCancelled);
+
         const midS = (lowS + highS) / 2;
         const candidate = encodeCandidate(source, midS, 1.0, 'image/png', sharedCanvas);
 
@@ -203,6 +255,8 @@ export async function optimizeImageToSvg(
       bestCandidate = bestPng || encodeCandidate(source, 0.1, 1.0, 'image/png', sharedCanvas);
     }
   }
+
+  throwIfCancelled(isCancelled);
 
   const durationMs = performance.now() - startTime;
   const isTargetMet = settings.preset === 'unrestricted' || bestCandidate.byteLength <= targetBytes;

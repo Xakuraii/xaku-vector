@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, Suspense } from 'react';
 import { AppLayout } from '../components/layout/AppLayout';
 import { HeroSection } from '../features/converter/components/HeroSection';
 import { UploadDropzone } from '../features/converter/components/UploadDropzone';
@@ -6,10 +6,16 @@ import { ConversionSettings } from '../features/converter/components/ConversionS
 import { FileMetrics } from '../features/converter/components/FileMetrics';
 import { ComparisonWorkspace } from '../features/converter/components/ComparisonWorkspace';
 import { OutputActions } from '../features/converter/components/OutputActions';
-import { SvgCodeInspector } from '../features/converter/components/SvgCodeInspector';
 import { SupportingSections } from '../features/converter/components/SupportingSections';
 import { useImageConverter } from '../features/converter/hooks/useImageConverter';
 import { useClipboardPaste } from '../features/converter/hooks/useClipboardPaste';
+
+// Lazy-load modal to avoid loading XML inspector markup into initial critical chunk
+const SvgCodeInspector = React.lazy(() =>
+  import('../features/converter/components/SvgCodeInspector').then((module) => ({
+    default: module.SvgCodeInspector,
+  }))
+);
 
 export const App: React.FC = () => {
   const {
@@ -24,7 +30,9 @@ export const App: React.FC = () => {
     zoom,
     isInspectorOpen,
     copySuccess,
+    downloadSuccess,
     loadUserFile,
+    loadSample,
     removeImage,
     updateSettings,
     reprocess,
@@ -42,7 +50,7 @@ export const App: React.FC = () => {
     onImagePasted: loadUserFile,
   });
 
-  const handleHeroConvertClick = () => {
+  const handleHeroConvertClick = useCallback(() => {
     const dropzone = document.getElementById('converter');
     if (dropzone) {
       dropzone.scrollIntoView({ behavior: 'smooth' });
@@ -52,7 +60,7 @@ export const App: React.FC = () => {
         fileInput.click();
       }
     }
-  };
+  }, [sourceImage]);
 
   const isProcessing = status === 'optimizing' || status === 'loading';
 
@@ -61,13 +69,17 @@ export const App: React.FC = () => {
       <div id="top" />
 
       {/* Hero Section */}
-      <HeroSection onConvertClick={handleHeroConvertClick} />
+      <HeroSection
+        onConvertClick={handleHeroConvertClick}
+        targetKB={settings.preset === 'unrestricted' ? 800 : settings.targetMaxKB}
+      />
 
       {/* Upload Dropzone */}
       <UploadDropzone
         sourceImage={sourceImage}
         onFileSelected={loadUserFile}
         onRemoveImage={removeImage}
+        onLoadSample={loadSample}
         errorMessage={errorMessage}
         warningMessage={warningMessage}
       />
@@ -83,6 +95,7 @@ export const App: React.FC = () => {
             filename={sourceImage?.name || 'xakuvector'}
             isProcessing={isProcessing}
             copySuccess={copySuccess}
+            downloadSuccess={downloadSuccess}
             onDownload={downloadSvg}
             onCopy={copySvg}
             onInspect={toggleInspector}
@@ -109,14 +122,16 @@ export const App: React.FC = () => {
       </section>
 
       {/* SVG Code Inspector Modal */}
-      {result && (
-        <SvgCodeInspector
-          isOpen={isInspectorOpen}
-          onClose={closeInspector}
-          svgString={result.svgString}
-          byteLength={result.byteLength}
-          filename={sourceImage?.name || 'xakuvector'}
-        />
+      {result && isInspectorOpen && (
+        <Suspense fallback={null}>
+          <SvgCodeInspector
+            isOpen={isInspectorOpen}
+            onClose={closeInspector}
+            svgString={result.svgString}
+            byteLength={result.byteLength}
+            filename={sourceImage?.name || 'xakuvector'}
+          />
+        </Suspense>
       )}
 
       {/* Supporting Content: How it works, Technical Reality, Privacy, FAQ */}

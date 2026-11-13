@@ -2,11 +2,11 @@ import React from 'react';
 import { Info, ShieldCheck, HelpCircle, FileCode, CheckCircle2 } from 'lucide-react';
 import { Card } from '../../../components/ui/Card';
 
-export const SupportingSections: React.FC = () => {
+const SupportingSectionsComponent: React.FC = () => {
   return (
     <div className="space-y-16 pt-8">
       {/* 1. How It Works Section */}
-      <section id="how-it-works" className="space-y-6">
+      <section id="how-it-works" className="content-auto space-y-6">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
             How It Works
@@ -65,7 +65,7 @@ export const SupportingSections: React.FC = () => {
       </section>
 
       {/* 2. What to Expect (Critical Technical Honesty) */}
-      <section id="about" className="space-y-6">
+      <section id="about" className="content-auto space-y-6">
         <Card className="p-6 sm:p-8 border-l-4 border-l-red-600 space-y-4">
           <div className="flex items-center gap-2">
             <FileCode className="w-5 h-5 text-red-600 dark:text-red-500" />
@@ -112,7 +112,7 @@ export const SupportingSections: React.FC = () => {
       </section>
 
       {/* 3. Privacy & Client-Side Guarantee */}
-      <section className="space-y-4">
+      <section className="content-auto space-y-4">
         <Card className="p-6 sm:p-8 bg-zinc-50/80 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 space-y-3">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-emerald-500" />
@@ -129,7 +129,7 @@ export const SupportingSections: React.FC = () => {
       </section>
 
       {/* 4. Frequently Asked Questions */}
-      <section id="faq" className="space-y-6">
+      <section id="faq" className="content-auto space-y-6">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
             Frequently Asked Questions
@@ -214,3 +214,5 @@ export const SupportingSections: React.FC = () => {
     </div>
   );
 };
+
+export const SupportingSections = React.memo(SupportingSectionsComponent);

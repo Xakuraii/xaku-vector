@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { ImageSourceData, OptimizationResult, PreviewBackground } from '../types';
 
 interface ImagePreviewProps {
@@ -10,7 +10,7 @@ interface ImagePreviewProps {
   isProcessing?: boolean;
 }
 
-export const ImagePreview: React.FC<ImagePreviewProps> = ({
+const ImagePreviewComponent: React.FC<ImagePreviewProps> = ({
   type,
   sourceImage,
   result,
@@ -18,17 +18,38 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
   previewBg,
   isProcessing = false,
 }) => {
-  // Compute safe data URL for SVG preview
-  const svgDataUrl = useMemo(() => {
-    if (type !== 'svg' || !result?.svgString) return null;
-    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(result.svgString)}`;
-  }, [type, result]);
+  // A Blob URL avoids percent-encoding the entire (potentially multi-megabyte)
+  // SVG string. Derived during render without cascading state updates.
+  const svgString = result?.svgString;
+  const svgUrl = useMemo(() => {
+    if (type !== 'svg' || !svgString) return null;
+
+    try {
+      if (typeof URL !== 'undefined' && typeof URL.createObjectURL === 'function') {
+        return URL.createObjectURL(new Blob([svgString], { type: 'image/svg+xml' }));
+      }
+    } catch {
+      // Fall through to the data URL below.
+    }
+
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgString)}`;
+  }, [type, svgString]);
+
+  useEffect(() => {
+    return () => {
+      if (svgUrl?.startsWith('blob:') && typeof URL.revokeObjectURL === 'function') {
+        URL.revokeObjectURL(svgUrl);
+      }
+    };
+  }, [svgUrl]);
 
   const bgStyles = {
     checker: 'bg-checkerboard-adaptive',
     dark: 'bg-[#09090b]',
     light: 'bg-white',
   };
+
+  const originalSrc = sourceImage?.objectUrl || sourceImage?.dataUrl;
 
   return (
     <div
@@ -40,7 +61,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
           {type === 'original' ? 'Original Input' : 'Live Generated .SVG'}
         </span>
 
-        <span className="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100/90 dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400">
+        <span className="font-mono text-[11px] px-2 py-0.5 rounded bg-zinc-100/90 dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300">
           {type === 'original'
             ? `${sourceImage?.width || 0} × ${sourceImage?.height || 0} px`
             : `${result ? (result.byteLength / 1024).toFixed(1) : 0} KB SVG`}
@@ -49,27 +70,31 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
 
       {/* Center Image Rendering Container */}
       <div className="my-auto flex items-center justify-center w-full h-72 sm:h-80 overflow-auto p-2">
-        {type === 'original' && sourceImage ? (
+        {type === 'original' && originalSrc ? (
           <img
-            src={sourceImage.dataUrl}
+            src={originalSrc}
             alt="Original input graphic"
+            decoding="async"
+            draggable={false}
             style={{ transform: `scale(${zoom})` }}
             className="max-h-full max-w-full object-contain transition-transform duration-150 select-none"
           />
-        ) : type === 'svg' && svgDataUrl ? (
+        ) : type === 'svg' && svgUrl ? (
           <div
             style={{ transform: `scale(${zoom})` }}
             className="w-full h-full flex items-center justify-center transition-transform duration-150 select-none"
           >
             <img
-              src={svgDataUrl}
+              src={svgUrl}
               alt="Live rendered SVG output"
+              decoding="async"
+              draggable={false}
               className="max-h-full max-w-full object-contain"
             />
           </div>
         ) : (
           <div className="text-center p-6 space-y-2 pointer-events-none select-none">
-            <div className="w-10 h-10 mx-auto rounded-xl bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-400 dark:text-zinc-500">
+            <div className="w-10 h-10 mx-auto rounded-xl bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-500 dark:text-zinc-400">
               {type === 'original' ? (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -90,10 +115,10 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
                 </svg>
               )}
             </div>
-            <div className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+            <div className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
               {type === 'original' ? 'Original Preview Stage' : 'Generated SVG Stage'}
             </div>
-            <p className="text-[11px] text-zinc-400 dark:text-zinc-500 max-w-xs">
+            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 max-w-xs">
               {type === 'original'
                 ? 'Drop an image or paste from clipboard to view'
                 : 'Live SVG rendering will appear here'}
@@ -113,3 +138,5 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
     </div>
   );
 };
+
+export const ImagePreview = React.memo(ImagePreviewComponent);

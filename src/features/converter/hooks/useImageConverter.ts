@@ -7,7 +7,7 @@ import {
   ViewMode,
 } from '../types';
 import { DEFAULT_SETTINGS } from '../constants';
-import { loadImageFromFile, revokeImageSource } from '../services/image-loader';
+import { loadImageFromFile, revokeImageSource, createSampleEmblem } from '../services/image-loader';
 import { optimizeImageToSvg } from '../services/size-optimizer';
 
 export type ConverterStatus = 'idle' | 'loading' | 'optimizing' | 'success' | 'error';
@@ -26,20 +26,34 @@ export function useImageConverter() {
   const [zoom, setZoom] = useState<number>(1);
   const [isInspectorOpen, setIsInspectorOpen] = useState<boolean>(false);
   const [copySuccess, setCopySuccess] = useState<boolean>(false);
+  const [downloadSuccess, setDownloadSuccess] = useState<boolean>(false);
 
   // Stale async protection
   const activeJobIdRef = useRef<number>(0);
   const sourceImageRef = useRef<ImageSourceData | null>(null);
+  const settingsRef = useRef<ConversionSettingsState>(settings);
+  const copyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const downloadTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     sourceImageRef.current = sourceImage;
   }, [sourceImage]);
+
+  useEffect(() => {
+    settingsRef.current = settings;
+  }, [settings]);
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (sourceImageRef.current) {
         revokeImageSource(sourceImageRef.current);
+      }
+      if (copyTimerRef.current) {
+        clearTimeout(copyTimerRef.current);
+      }
+      if (downloadTimerRef.current) {
+        clearTimeout(downloadTimerRef.current);
       }
     };
   }, []);
@@ -51,7 +65,11 @@ export function useImageConverter() {
       setErrorMessage(null);
 
       try {
-        const optResult = await optimizeImageToSvg(source, currentSettings);
+        const optResult = await optimizeImageToSvg(
+          source,
+          currentSettings,
+          () => jobId !== activeJobIdRef.current
+        );
 
         // If another job started in the meantime, discard stale result
         if (jobId !== activeJobIdRef.current) return;
@@ -59,6 +77,8 @@ export function useImageConverter() {
         setResult(optResult);
         setStatus('success');
       } catch (err) {
+        // A newer optimization replaced this one; not a user-facing error.
+        if (err instanceof Error && err.name === 'AbortError') return;
         if (jobId !== activeJobIdRef.current) return;
         setStatus('error');
         setErrorMessage(
@@ -84,12 +104,13 @@ export function useImageConverter() {
         }
 
         // Revoke previous source image
-        if (sourceImage) {
-          revokeImageSource(sourceImage);
+        if (sourceImageRef.current) {
+          revokeImageSource(sourceImageRef.current);
         }
 
+        sourceImageRef.current = loadedSource;
         setSourceImage(loadedSource);
-        await triggerOptimization(loadedSource, settings);
+        await triggerOptimization(loadedSource, settingsRef.current);
       } catch (err) {
         if (jobId !== activeJobIdRef.current) return;
         setStatus('error');
@@ -98,14 +119,44 @@ export function useImageConverter() {
         );
       }
     },
-    [sourceImage, settings, triggerOptimization]
+    [triggerOptimization]
   );
+
+  const loadSample = useCallback(async () => {
+    const jobId = ++activeJobIdRef.current;
+    setStatus('loading');
+    setErrorMessage(null);
+    setWarningMessage(null);
+
+    try {
+      const sample = await createSampleEmblem();
+      if (jobId !== activeJobIdRef.current) {
+        revokeImageSource(sample);
+        return;
+      }
+
+      if (sourceImageRef.current) {
+        revokeImageSource(sourceImageRef.current);
+      }
+
+      sourceImageRef.current = sample;
+      setSourceImage(sample);
+      await triggerOptimization(sample, settingsRef.current);
+    } catch (err) {
+      if (jobId !== activeJobIdRef.current) return;
+      setStatus('error');
+      setErrorMessage(
+        err instanceof Error ? err.message : 'Failed to generate sample emblem image.'
+      );
+    }
+  }, [triggerOptimization]);
 
   const removeImage = useCallback(() => {
     activeJobIdRef.current++;
-    if (sourceImage) {
-      revokeImageSource(sourceImage);
+    if (sourceImageRef.current) {
+      revokeImageSource(sourceImageRef.current);
     }
+    sourceImageRef.current = null;
     setSourceImage(null);
     setResult(null);
     setStatus('idle');
@@ -113,26 +164,28 @@ export function useImageConverter() {
     setWarningMessage(null);
     setZoom(1);
     setIsInspectorOpen(false);
-  }, [sourceImage]);
+  }, []);
 
   const updateSettings = useCallback(
     (newSettingsOrUpdater: Partial<ConversionSettingsState>) => {
-      setSettings((prev) => {
-        const updated = { ...prev, ...newSettingsOrUpdater };
-        if (sourceImage) {
-          triggerOptimization(sourceImage, updated);
-        }
-        return updated;
-      });
+      // Keep the trigger outside the state updater: React may invoke updaters
+      // twice in StrictMode, which previously ran the optimizer twice.
+      const updated = { ...settingsRef.current, ...newSettingsOrUpdater };
+      settingsRef.current = updated;
+      setSettings(updated);
+
+      if (sourceImageRef.current) {
+        triggerOptimization(sourceImageRef.current, updated);
+      }
     },
-    [sourceImage, triggerOptimization]
+    [triggerOptimization]
   );
 
   const reprocess = useCallback(() => {
-    if (sourceImage) {
-      triggerOptimization(sourceImage, settings);
+    if (sourceImageRef.current) {
+      triggerOptimization(sourceImageRef.current, settingsRef.current);
     }
-  }, [sourceImage, settings, triggerOptimization]);
+  }, [triggerOptimization]);
 
   const downloadSvg = useCallback(() => {
     if (!result?.svgString || !sourceImage) return;
@@ -147,6 +200,15 @@ export function useImageConverter() {
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
+
+      setDownloadSuccess(true);
+      if (downloadTimerRef.current) {
+        clearTimeout(downloadTimerRef.current);
+      }
+      downloadTimerRef.current = setTimeout(() => {
+        setDownloadSuccess(false);
+        downloadTimerRef.current = null;
+      }, 2200);
     } catch {
       setErrorMessage('Failed to trigger download.');
     }
@@ -171,7 +233,13 @@ export function useImageConverter() {
         document.body.removeChild(textArea);
       }
       setCopySuccess(true);
-      setTimeout(() => setCopySuccess(false), 2200);
+      if (copyTimerRef.current) {
+        clearTimeout(copyTimerRef.current);
+      }
+      copyTimerRef.current = setTimeout(() => {
+        setCopySuccess(false);
+        copyTimerRef.current = null;
+      }, 2200);
       return true;
     } catch {
       setErrorMessage('Could not copy SVG source to clipboard.');
@@ -209,7 +277,9 @@ export function useImageConverter() {
     zoom,
     isInspectorOpen,
     copySuccess,
+    downloadSuccess,
     loadUserFile,
+    loadSample,
     removeImage,
     updateSettings,
     reprocess,

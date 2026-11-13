@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
   optimizeImageToSvg,
   isWebpSupportedInCanvas,
+  encodeCandidate,
 } from '../src/features/converter/services/size-optimizer';
 import { ConversionSettingsState, ImageSourceData } from '../src/features/converter/types';
 
@@ -100,5 +101,16 @@ describe('size-optimizer', () => {
 
     expect(result.isTargetMet).toBe(false);
     expect(result.byteLength).toBeGreaterThan(settings.targetMaxKB * 1024);
+  });
+
+  it('reuses existing canvas buffer when reuseExistingCanvasContent is true', () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 800;
+
+    const candidate = encodeCandidate(mockSource, 1.0, 0.85, 'image/webp', canvas, true);
+    expect(candidate.encodedWidth).toBe(800);
+    expect(candidate.encodedHeight).toBe(800);
+    expect(candidate.quality).toBe(0.85);
   });
 });

@@ -1,5 +1,12 @@
 import React, { useRef, useState } from 'react';
-import { UploadCloud, Image as ImageIcon, RefreshCw, Trash2, AlertCircle } from 'lucide-react';
+import {
+  UploadCloud,
+  Image as ImageIcon,
+  RefreshCw,
+  Trash2,
+  AlertCircle,
+  Sparkles,
+} from 'lucide-react';
 import { ImageSourceData } from '../types';
 import { formatBytes, formatDimensions } from '../utils/format-utils';
 import { Button } from '../../../components/ui/Button';
@@ -8,14 +15,16 @@ interface UploadDropzoneProps {
   sourceImage: ImageSourceData | null;
   onFileSelected: (file: File) => void;
   onRemoveImage: () => void;
+  onLoadSample?: () => void;
   errorMessage?: string | null;
   warningMessage?: string | null;
 }
 
-export const UploadDropzone: React.FC<UploadDropzoneProps> = ({
+const UploadDropzoneComponent: React.FC<UploadDropzoneProps> = ({
   sourceImage,
   onFileSelected,
   onRemoveImage,
+  onLoadSample,
   errorMessage,
   warningMessage,
 }) => {
@@ -80,11 +89,11 @@ export const UploadDropzone: React.FC<UploadDropzoneProps> = ({
                 <span className="font-bold text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 truncate max-w-[200px] sm:max-w-xs">
                   {sourceImage.name}
                 </span>
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
                   {sourceImage.mimeType.replace('image/', '')}
                 </span>
               </div>
-              <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+              <div className="flex items-center gap-3 text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">
                 <span>{formatBytes(sourceImage.byteLength)}</span>
                 <span>•</span>
                 <span>{formatDimensions(sourceImage.width, sourceImage.height)}</span>
@@ -119,21 +128,13 @@ export const UploadDropzone: React.FC<UploadDropzoneProps> = ({
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           onClick={triggerBrowse}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              triggerBrowse();
-            }
-          }}
-          className={`relative rounded-2xl border-2 border-dashed p-6 sm:p-10 text-center cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 ${
+          className={`relative rounded-2xl border-2 border-dashed p-6 sm:p-10 text-center cursor-pointer transition-all duration-200 focus-within:ring-2 focus-within:ring-red-500 ${
             isDragOver
               ? 'border-red-500 bg-red-50/50 dark:bg-red-950/20 scale-[0.99]'
               : 'border-zinc-300 dark:border-zinc-700/80 hover:border-red-500/80 dark:hover:border-red-500/80 bg-white/60 dark:bg-zinc-900/40 hover:bg-zinc-50 dark:hover:bg-zinc-900/70 shadow-sm'
           }`}
         >
-          <div className="max-w-md mx-auto flex flex-col items-center space-y-3 pointer-events-none">
+          <div className="max-w-md mx-auto flex flex-col items-center space-y-3">
             <div className="w-12 h-12 rounded-2xl bg-red-100/80 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 flex items-center justify-center text-red-600 dark:text-red-400">
               <UploadCloud className="w-6 h-6" />
             </div>
@@ -142,17 +143,24 @@ export const UploadDropzone: React.FC<UploadDropzoneProps> = ({
               <p className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100">
                 Drop your image here{' '}
                 <span className="font-normal text-zinc-500 dark:text-zinc-400">or</span>{' '}
-                <span className="text-red-600 dark:text-red-400 underline decoration-red-400/40 hover:decoration-red-400">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    triggerBrowse();
+                  }}
+                  className="text-red-600 dark:text-red-400 underline decoration-red-400/40 hover:decoration-red-400 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500 rounded"
+                >
                   choose from your device
-                </span>
+                </button>
               </p>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
                 PNG, WebP, or JPEG. Select a file to get started.
               </p>
             </div>
 
             <div className="pt-1 flex flex-wrap items-center justify-center gap-2">
-              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+              <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
                 Pro tip: Press{' '}
                 <kbd className="px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 font-mono text-[10px]">
                   Ctrl+V
@@ -160,6 +168,22 @@ export const UploadDropzone: React.FC<UploadDropzoneProps> = ({
                 to paste from clipboard
               </span>
             </div>
+
+            {onLoadSample && (
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onLoadSample();
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 text-xs font-semibold text-zinc-700 dark:text-zinc-200 transition-colors cursor-pointer shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Try sample emblem</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -188,3 +212,5 @@ export const UploadDropzone: React.FC<UploadDropzoneProps> = ({
     </div>
   );
 };
+
+export const UploadDropzone = React.memo(UploadDropzoneComponent);

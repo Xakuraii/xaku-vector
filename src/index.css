@@ -10,8 +10,15 @@
     --brand-red: #dc2626;
   }
 
+  html {
+    scroll-behavior: smooth;
+    /* Keep anchor targets clear of the sticky header */
+    scroll-padding-top: 6rem;
+  }
+
   body {
     font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
   }
 
   code,
@@ -19,6 +26,57 @@
   kbd,
   .mono {
     font-family: var(--font-mono);
+  }
+
+  code,
+  pre,
+  kbd,
+  .mono,
+  .font-mono {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Skip layout/paint work for sections that start below the fold. */
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 640px;
+}
+
+/* Smooth GPU-composited View Transitions for theme switching */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html[data-magicui-theme-vt='active']::view-transition-new(root) {
+  clip-path: var(--magicui-theme-vt-clip-from);
+}
+
+html[data-magicui-theme-vt='active']::view-transition-group(root) {
+  animation-duration: var(--magicui-theme-toggle-vt-duration);
+}
+
+/* Disable competing CSS color transitions while View Transition captures & animates snapshots */
+html[data-magicui-theme-vt='active'] *,
+html[data-magicui-theme-vt='active'] *::before,
+html[data-magicui-theme-vt='active'] *::after {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

@@ -5,7 +5,9 @@ import { UploadDropzone } from '../src/features/converter/components/UploadDropz
 import { ConversionSettings } from '../src/features/converter/components/ConversionSettings';
 import { OutputActions } from '../src/features/converter/components/OutputActions';
 import { FileMetrics } from '../src/features/converter/components/FileMetrics';
+import { ComparisonWorkspace } from '../src/features/converter/components/ComparisonWorkspace';
 import { AppHeader } from '../src/components/layout/AppHeader';
+import { AnimatedThemeToggler } from '../src/components/ui/AnimatedThemeToggler';
 import { AppFooter } from '../src/components/layout/AppFooter';
 import { HeroSection } from '../src/features/converter/components/HeroSection';
 import { DEFAULT_SETTINGS } from '../src/features/converter/constants';
@@ -61,6 +63,23 @@ describe('UploadDropzone component', () => {
 
     const alert = screen.getByRole('alert');
     expect(alert).toHaveTextContent('Corrupted file format');
+  });
+
+  it('triggers onLoadSample when clicking try sample emblem button', () => {
+    const handleLoadSample = vi.fn();
+    render(
+      <UploadDropzone
+        sourceImage={null}
+        onFileSelected={vi.fn()}
+        onRemoveImage={vi.fn()}
+        onLoadSample={handleLoadSample}
+      />
+    );
+
+    const sampleBtn = screen.getByRole('button', { name: /Try sample emblem/i });
+    expect(sampleBtn).toBeInTheDocument();
+    fireEvent.click(sampleBtn);
+    expect(handleLoadSample).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -200,6 +219,73 @@ describe('OutputActions component', () => {
     fireEvent.click(inspectBtn);
     expect(handleInspect).toHaveBeenCalled();
   });
+
+  it('displays download success confirmation when downloadSuccess is true', () => {
+    const mockResult: OptimizationResult = {
+      svgString: '<svg>test</svg>',
+      byteLength: 204800,
+      encodedWidth: 800,
+      encodedHeight: 800,
+      quality: 0.9,
+      scale: 1,
+      format: 'image/webp',
+      isTargetMet: true,
+      targetBytes: 300000,
+      mimeTypeActuallyUsed: 'image/webp',
+      durationMs: 15,
+    };
+
+    render(
+      <OutputActions
+        result={mockResult}
+        filename="custom-logo"
+        isProcessing={false}
+        copySuccess={false}
+        downloadSuccess={true}
+        onDownload={vi.fn()}
+        onCopy={vi.fn()}
+        onInspect={vi.fn()}
+        onReprocess={vi.fn()}
+      />
+    );
+
+    expect(screen.getByText('Downloaded .SVG Successfully!')).toBeInTheDocument();
+  });
+});
+
+describe('ComparisonWorkspace component', () => {
+  it('renders Split, SVG Only, and Original view mode controls and handles toggling', () => {
+    const handleViewModeChange = vi.fn();
+    const handlePreviewBgChange = vi.fn();
+    const handleToggleZoom = vi.fn();
+
+    render(
+      <ComparisonWorkspace
+        sourceImage={null}
+        result={null}
+        viewMode="split"
+        previewBg="checker"
+        zoom={1}
+        isProcessing={false}
+        onViewModeChange={handleViewModeChange}
+        onPreviewBgChange={handlePreviewBgChange}
+        onToggleZoom={handleToggleZoom}
+      />
+    );
+
+    expect(screen.getByRole('button', { name: /Split/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /SVG Only/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Original/i })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /Original/i }));
+    expect(handleViewModeChange).toHaveBeenCalledWith('original-only');
+
+    fireEvent.click(screen.getByRole('button', { name: /Dark/i }));
+    expect(handlePreviewBgChange).toHaveBeenCalledWith('dark');
+
+    fireEvent.click(screen.getByTitle(/Toggle preview zoom level/i));
+    expect(handleToggleZoom).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe('FileMetrics component', () => {
@@ -327,6 +413,81 @@ describe('AppFooter component', () => {
   });
 });
 
+describe('AnimatedThemeToggler component', () => {
+  it('calls onThemeChange immediately when startViewTransition is unavailable', () => {
+    const handleThemeChange = vi.fn();
+    render(<AnimatedThemeToggler theme="dark" onThemeChange={handleThemeChange} />);
+
+    const btn = screen.getByRole('button', { name: /Switch to light mode/i });
+    fireEvent.click(btn);
+    expect(handleThemeChange).toHaveBeenCalledWith('light');
+  });
+
+  it('animates circle clip-path via View Transitions API and cleans up on finish', async () => {
+    const handleThemeChange = vi.fn();
+    const cancelSpy = vi.fn();
+    const animateSpy = vi.fn(() => ({ cancel: cancelSpy }) as unknown as Animation);
+
+    const originalAnimate = document.documentElement.animate;
+    const originalStartVT = (document as unknown as { startViewTransition?: unknown })
+      .startViewTransition;
+
+    let resolveFinished!: () => void;
+    const finishedPromise = new Promise<void>((resolve) => {
+      resolveFinished = resolve;
+    });
+
+    document.documentElement.animate = animateSpy;
+    (
+      document as unknown as {
+        startViewTransition: (cb: () => void) => {
+          ready: Promise<void>;
+          finished: Promise<void>;
+        };
+      }
+    ).startViewTransition = (cb: () => void) => {
+      cb();
+      return {
+        ready: Promise.resolve(),
+        finished: finishedPromise,
+      };
+    };
+
+    try {
+      render(<AnimatedThemeToggler variant="circle" theme="dark" onThemeChange={handleThemeChange} />);
+
+      const btn = screen.getByRole('button', { name: /Switch to light mode/i });
+      fireEvent.click(btn);
+
+      expect(handleThemeChange).toHaveBeenCalledWith('light');
+      expect(document.documentElement.dataset.magicuiThemeVt).toBe('active');
+
+      await Promise.resolve();
+      expect(animateSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          clipPath: [
+            expect.stringMatching(/^circle\(0% at /),
+            expect.stringMatching(/^circle\(/),
+          ],
+        }),
+        expect.objectContaining({
+          duration: 400,
+          pseudoElement: '::view-transition-new(root)',
+        })
+      );
+
+      resolveFinished();
+      await finishedPromise;
+      await Promise.resolve();
+      expect(document.documentElement.dataset.magicuiThemeVt).toBeUndefined();
+    } finally {
+      document.documentElement.animate = originalAnimate;
+      (document as unknown as { startViewTransition?: unknown }).startViewTransition =
+        originalStartVT;
+    }
+  });
+});
+
 describe('AppFooter component', () => {
   it('renders branding, open-source card, GitHub links, author credit, and back-to-top button', () => {
     // Mock window.scrollTo
@@ -355,5 +516,80 @@ describe('AppFooter component', () => {
     expect(topBtn).toBeInTheDocument();
     fireEvent.click(topBtn);
     expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
+  });
+});
+
+describe('AnimatedThemeToggler component', () => {
+  it('calls onThemeChange immediately when startViewTransition is unavailable', () => {
+    const handleThemeChange = vi.fn();
+    render(<AnimatedThemeToggler theme="dark" onThemeChange={handleThemeChange} />);
+
+    const btn = screen.getByRole('button', { name: /Switch to light mode/i });
+    fireEvent.click(btn);
+    expect(handleThemeChange).toHaveBeenCalledWith('light');
+  });
+
+  it('animates circle clip-path via View Transitions API and cleans up on finish', async () => {
+    const handleThemeChange = vi.fn();
+    const cancelSpy = vi.fn();
+    const animateSpy = vi.fn(() => ({ cancel: cancelSpy }) as unknown as Animation);
+
+    const originalAnimate = document.documentElement.animate;
+    const originalStartVT = (document as unknown as { startViewTransition?: unknown })
+      .startViewTransition;
+
+    let resolveFinished!: () => void;
+    const finishedPromise = new Promise<void>((resolve) => {
+      resolveFinished = resolve;
+    });
+
+    document.documentElement.animate = animateSpy;
+    (
+      document as unknown as {
+        startViewTransition: (cb: () => void) => {
+          ready: Promise<void>;
+          finished: Promise<void>;
+        };
+      }
+    ).startViewTransition = (cb: () => void) => {
+      cb();
+      return {
+        ready: Promise.resolve(),
+        finished: finishedPromise,
+      };
+    };
+
+    try {
+      render(<AnimatedThemeToggler variant="circle" theme="dark" onThemeChange={handleThemeChange} />);
+
+      const btn = screen.getByRole('button', { name: /Switch to light mode/i });
+      fireEvent.click(btn);
+
+      expect(handleThemeChange).toHaveBeenCalledWith('light');
+      expect(document.documentElement.dataset.magicuiThemeVt).toBe('active');
+
+      await Promise.resolve();
+      expect(animateSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          clipPath: [
+            expect.stringMatching(/^circle\(0% at /),
+            expect.stringMatching(/^circle\(/),
+          ],
+        }),
+        expect.objectContaining({
+          duration: 400,
+          pseudoElement: '::view-transition-new(root)',
+        })
+      );
+
+      resolveFinished();
+      await finishedPromise;
+      await Promise.resolve();
+      expect(document.documentElement.dataset.magicuiThemeVt).toBeUndefined();
+    } finally {
+      document.documentElement.animate = originalAnimate;
+      (document as unknown as { startViewTransition?: unknown }).startViewTransition =
+        originalStartVT;
+    }
   });
 });

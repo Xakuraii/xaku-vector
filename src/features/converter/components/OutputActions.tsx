@@ -9,17 +9,19 @@ interface OutputActionsProps {
   filename: string;
   isProcessing: boolean;
   copySuccess: boolean;
+  downloadSuccess?: boolean;
   onDownload: () => void;
   onCopy: () => void;
   onInspect: () => void;
   onReprocess: () => void;
 }
 
-export const OutputActions: React.FC<OutputActionsProps> = ({
+const OutputActionsComponent: React.FC<OutputActionsProps> = ({
   result,
   filename,
   isProcessing,
   copySuccess,
+  downloadSuccess = false,
   onDownload,
   onCopy,
   onInspect,
@@ -27,9 +29,11 @@ export const OutputActions: React.FC<OutputActionsProps> = ({
 }) => {
   const isAvailable = Boolean(result?.svgString) && !isProcessing;
   const sizeLabel = result ? formatBytes(result.byteLength) : '';
-  const downloadText = result
-    ? `Download .SVG (${filename}.svg — ${sizeLabel})`
-    : 'Download .SVG File';
+  const downloadText = downloadSuccess
+    ? 'Downloaded .SVG Successfully!'
+    : result
+      ? `Download .SVG (${filename}.svg — ${sizeLabel})`
+      : 'Download .SVG File';
 
   return (
     <div className="space-y-3 pt-2">
@@ -41,7 +45,13 @@ export const OutputActions: React.FC<OutputActionsProps> = ({
         isLoading={isProcessing}
         onClick={onDownload}
         className="w-full text-sm sm:text-base py-3.5 shadow-lg shadow-red-600/20"
-        leftIcon={<Download className="w-5 h-5" />}
+        leftIcon={
+          downloadSuccess ? (
+            <Check className="w-5 h-5 text-emerald-300" />
+          ) : (
+            <Download className="w-5 h-5" />
+          )
+        }
       >
         <span>{downloadText}</span>
       </Button>
@@ -87,3 +97,5 @@ export const OutputActions: React.FC<OutputActionsProps> = ({
     </div>
   );
 };
+
+export const OutputActions = React.memo(OutputActionsComponent);

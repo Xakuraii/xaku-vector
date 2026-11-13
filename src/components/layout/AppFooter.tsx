@@ -1,7 +1,7 @@
 import React from 'react';
 import { Star, ExternalLink, ArrowUp, Heart, Code2 } from 'lucide-react';
 
-export const AppFooter: React.FC = () => {
+const AppFooterComponent: React.FC = () => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -18,6 +18,10 @@ export const AppFooter: React.FC = () => {
                 <img
                   src="/favicon.svg"
                   alt="XakuVector Dragon Logo"
+                  width={40}
+                  height={40}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-contain select-none"
                 />
               </div>
@@ -233,3 +237,5 @@ export const AppFooter: React.FC = () => {
     </footer>
   );
 };
+
+export const AppFooter = React.memo(AppFooterComponent);

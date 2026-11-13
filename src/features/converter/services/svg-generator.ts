@@ -26,23 +26,29 @@ export function buildSvgMarkup({
 
   return [
     '<?xml version="1.0" encoding="UTF-8" standalone="no"?>',
-    `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${safeWidth}" height="${safeHeight}" viewBox="0 0 ${safeWidth} ${safeHeight}" fill="none">`,
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${safeWidth}" height="${safeHeight}" viewBox="0 0 ${safeWidth} ${safeHeight}" fill="none">`,
     `  <title>${safeTitle}</title>`,
     `  <desc>${safeDesc}</desc>`,
-    `  <image width="${safeWidth}" height="${safeHeight}" preserveAspectRatio="xMidYMid meet" href="${dataUrl}" xlink:href="${dataUrl}" />`,
+    `  <image width="${safeWidth}" height="${safeHeight}" preserveAspectRatio="xMidYMid meet" href="${dataUrl}" />`,
     '</svg>',
   ].join('\n');
 }
 
+const textEncoder = typeof TextEncoder !== 'undefined' ? new TextEncoder() : null;
+
 /**
  * Computes exact UTF-8 byte size of the SVG string.
+ * Uses a module-cached TextEncoder to avoid allocating throwaway Blob instances
+ * during binary search candidate evaluations.
  */
 export function getSvgByteLength(svgString: string): number {
+  if (textEncoder) {
+    return textEncoder.encode(svgString).length;
+  }
   if (typeof Blob !== 'undefined') {
     return new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' }).size;
   }
-  // Fallback for Node/test environments without Blob
-  return new TextEncoder().encode(svgString).length;
+  return svgString.length;
 }
 
 /**
