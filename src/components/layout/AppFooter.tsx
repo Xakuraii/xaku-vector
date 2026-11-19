@@ -30,7 +30,7 @@ const AppFooterComponent: React.FC = () => {
                   Xaku<span className="text-red-600 dark:text-red-500">Vector</span>
                 </span>
                 <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-red-50 text-red-600 dark:bg-red-950/60 dark:text-red-400 border border-red-200 dark:border-red-900/50 rounded-md">
-                  v1.0.0
+                  v2.0.0
                 </span>
               </div>
             </div>

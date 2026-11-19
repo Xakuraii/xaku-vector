@@ -393,7 +393,7 @@ describe('AppFooter component', () => {
     const logoImg = screen.getByAltText(/XakuVector Dragon Logo/i);
     expect(logoImg).toBeInTheDocument();
     expect(logoImg).toHaveAttribute('src', '/favicon.svg');
-    expect(screen.getByText('v1.0.0')).toBeInTheDocument();
+    expect(screen.getByText('v2.0.0')).toBeInTheDocument();
 
     // Open source GitHub card
     expect(screen.getByText(/XakuVector is 100% free & open source/i)).toBeInTheDocument();
@@ -499,7 +499,7 @@ describe('AppFooter component', () => {
     const logoImg = screen.getByAltText(/XakuVector Dragon Logo/i);
     expect(logoImg).toBeInTheDocument();
     expect(logoImg).toHaveAttribute('src', '/favicon.svg');
-    expect(screen.getByText('v1.0.0')).toBeInTheDocument();
+    expect(screen.getByText('v2.0.0')).toBeInTheDocument();
 
     // Open source GitHub card
     expect(screen.getByText(/XakuVector is 100% free & open source/i)).toBeInTheDocument();

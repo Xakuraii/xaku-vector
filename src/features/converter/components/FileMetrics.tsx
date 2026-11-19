@@ -15,47 +15,47 @@ const FileMetricsComponent: React.FC<FileMetricsProps> = ({ sourceImage, result,
     return (
       <Card className="p-4 sm:p-5">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/60 dark:border-zinc-800">
-            <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/60 dark:border-zinc-800 min-w-0">
+            <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium truncate block">
               Final .SVG Size
             </span>
             <div className="text-lg font-bold font-mono text-zinc-400 dark:text-zinc-600 mt-1">
               —
             </div>
-            <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+            <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5 truncate">
               Awaiting input
             </div>
           </div>
-          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/60 dark:border-zinc-800">
-            <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/60 dark:border-zinc-800 min-w-0">
+            <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium truncate block">
               Input Image Size
             </span>
             <div className="text-lg font-bold font-mono text-zinc-400 dark:text-zinc-600 mt-1">
               —
             </div>
-            <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+            <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5 truncate">
               Awaiting input
             </div>
           </div>
-          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/60 dark:border-zinc-800">
-            <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/60 dark:border-zinc-800 min-w-0">
+            <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium truncate block">
               SVG ViewBox
             </span>
             <div className="text-lg font-bold font-mono text-zinc-400 dark:text-zinc-600 mt-1">
               —
             </div>
-            <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+            <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5 truncate">
               Awaiting input
             </div>
           </div>
-          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/60 dark:border-zinc-800">
-            <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/60 dark:border-zinc-800 min-w-0">
+            <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium truncate block">
               Raster Packaging
             </span>
             <div className="text-lg font-bold font-mono text-zinc-400 dark:text-zinc-600 mt-1">
               —
             </div>
-            <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+            <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5 truncate">
               Awaiting input
             </div>
           </div>
@@ -78,12 +78,12 @@ const FileMetricsComponent: React.FC<FileMetricsProps> = ({ sourceImage, result,
       {/* 4 Primary Telemetry Metrics */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {/* Metric 1: Final SVG File Size */}
-        <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/70 dark:border-zinc-800">
-          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium block">
+        <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/70 dark:border-zinc-800 min-w-0">
+          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium block truncate">
             Generated .SVG Size
           </span>
           <div
-            className={`text-2xl sm:text-3xl font-extrabold font-mono tracking-tight mt-0.5 ${
+            className={`text-lg sm:text-xl lg:text-2xl font-bold font-mono tracking-tight whitespace-nowrap truncate mt-0.5 ${
               isTargetMet
                 ? 'text-emerald-600 dark:text-emerald-400'
                 : 'text-amber-600 dark:text-amber-400'
@@ -91,31 +91,33 @@ const FileMetricsComponent: React.FC<FileMetricsProps> = ({ sourceImage, result,
           >
             {formatBytes(result.byteLength)}
           </div>
-          <div className="flex items-center gap-1 text-[10px] font-semibold mt-0.5">
+          <div className="flex items-center gap-1 text-[10px] font-semibold mt-0.5 truncate">
             {isTargetMet ? (
-              <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5">
-                <CheckCircle2 className="w-3 h-3" />
-                {settings.preset === 'unrestricted' ? 'Unrestricted' : `Under ${limitKB} KB Target`}
+              <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 truncate">
+                <CheckCircle2 className="w-3 h-3 shrink-0" />
+                <span className="truncate">
+                  {settings.preset === 'unrestricted' ? 'Unrestricted' : `Under ${limitKB} KB Target`}
+                </span>
               </span>
             ) : (
-              <span className="text-amber-600 dark:text-amber-400 flex items-center gap-0.5">
-                <AlertTriangle className="w-3 h-3" />
-                Closest achievable
+              <span className="text-amber-600 dark:text-amber-400 flex items-center gap-0.5 truncate">
+                <AlertTriangle className="w-3 h-3 shrink-0" />
+                <span className="truncate">Closest achievable</span>
               </span>
             )}
           </div>
         </div>
 
         {/* Metric 2: Original Input Size */}
-        <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/70 dark:border-zinc-800">
-          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium block">
+        <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/70 dark:border-zinc-800 min-w-0">
+          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium block truncate">
             Original Input Size
           </span>
-          <div className="text-lg sm:text-xl font-bold font-mono text-zinc-800 dark:text-zinc-200 mt-0.5">
+          <div className="text-lg sm:text-xl font-bold font-mono text-zinc-800 dark:text-zinc-200 mt-0.5 whitespace-nowrap truncate">
             {formatBytes(sourceImage.byteLength)}
           </div>
           <div
-            className={`text-[10px] font-semibold mt-0.5 ${
+            className={`text-[10px] font-semibold mt-0.5 truncate ${
               savings.isReduction
                 ? 'text-emerald-600 dark:text-emerald-400'
                 : 'text-zinc-500 dark:text-zinc-400'
@@ -126,28 +128,28 @@ const FileMetricsComponent: React.FC<FileMetricsProps> = ({ sourceImage, result,
         </div>
 
         {/* Metric 3: SVG ViewBox & Encoded Raster */}
-        <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/70 dark:border-zinc-800">
-          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium block">
+        <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/70 dark:border-zinc-800 min-w-0">
+          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium block truncate">
             SVG ViewBox / Raster
           </span>
-          <div className="text-sm sm:text-base font-bold font-mono text-zinc-800 dark:text-zinc-200 mt-0.5">
+          <div className="text-sm sm:text-base font-bold font-mono text-zinc-800 dark:text-zinc-200 mt-0.5 whitespace-nowrap truncate">
             {sourceImage.width} × {sourceImage.height}
           </div>
-          <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+          <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5 truncate">
             Raster: {result.encodedWidth} × {result.encodedHeight} ({Math.round(result.scale * 100)}
             %)
           </div>
         </div>
 
         {/* Metric 4: Compression Fidelity */}
-        <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/70 dark:border-zinc-800">
-          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium block">
+        <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/70 dark:border-zinc-800 min-w-0">
+          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium block truncate">
             Embedded Format
           </span>
-          <div className="text-sm sm:text-base font-bold text-zinc-800 dark:text-zinc-200 mt-0.5">
+          <div className="text-sm sm:text-base font-bold text-zinc-800 dark:text-zinc-200 mt-0.5 whitespace-nowrap truncate">
             {result.mimeTypeActuallyUsed === 'image/webp' ? 'WebP Data' : 'PNG Data'}
           </div>
-          <div className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono mt-0.5">
+          <div className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono mt-0.5 truncate">
             {result.mimeTypeActuallyUsed === 'image/webp'
               ? `Quality: ${Math.round(result.quality * 100)}%`
               : 'Lossless stream'}
