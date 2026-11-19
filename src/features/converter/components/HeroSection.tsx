@@ -73,7 +73,7 @@ const HeroSectionComponent: React.FC<HeroSectionProps> = ({ onConvertClick, targ
 
       {/* Description */}
       <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-300 max-w-2xl mx-auto leading-relaxed text-pretty">
-        Wrap PNG, WebP, and JPEG graphics into lightweight, production-ready SVG containers with a
+        Wrap PNG, WebP, JPEG, GIF, AVIF, BMP, ICO, and SVG graphics into lightweight, production-ready SVG containers with a
         byte budget you set. Everything is encoded locally — no uploads, no accounts.
       </p>
 
@@ -109,7 +109,7 @@ const HeroSectionComponent: React.FC<HeroSectionProps> = ({ onConvertClick, targ
             />
           </svg>
           <span>Star on GitHub</span>
-          <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500 group-hover:scale-110 transition-transform" />
+          <Star className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400 group-hover:text-amber-500 group-hover:scale-110 transition-all" />
         </a>
       </div>
 

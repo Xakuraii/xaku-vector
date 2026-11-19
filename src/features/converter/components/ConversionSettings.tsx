@@ -157,7 +157,7 @@ const ConversionSettingsComponent: React.FC<ConversionSettingsProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3.5">
         <div className="flex items-center gap-2.5">
-          <span className="w-2.5 h-2.5 rounded-full bg-red-600 dark:bg-red-500"></span>
+          <Sliders className="w-4 h-4 text-red-600 dark:text-red-500" />
           <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">
             Conversion &amp; Size Budget
           </h2>

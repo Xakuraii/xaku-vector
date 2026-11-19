@@ -68,7 +68,7 @@ const UploadDropzoneComponent: React.FC<UploadDropzoneProps> = ({
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/png,image/webp,image/jpeg"
+        accept="image/png,image/webp,image/jpeg,image/gif,image/avif,image/bmp,image/x-icon,image/svg+xml,.png,.webp,.jpg,.jpeg,.jfif,.gif,.avif,.bmp,.ico,.svg"
         onChange={handleFileInputChange}
         className="hidden"
         aria-label="Upload image file"
@@ -152,7 +152,7 @@ const UploadDropzoneComponent: React.FC<UploadDropzoneProps> = ({
                 </button>
               </p>
               <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
-                PNG, WebP, or JPEG. Select a file to get started.
+                PNG, WebP, JPEG, GIF, AVIF, BMP, ICO, or SVG. Select a file to get started.
               </p>
             </div>
 

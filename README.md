@@ -56,11 +56,16 @@ Designed for designers, developers, and content creators who need to meet strict
 
 ## Supported Formats
 
-| Input Format | MIME Type    | Transparency | Max Recommended Size |
-| :----------- | :----------- | :----------: | :------------------- |
-| **PNG**      | `image/png`  | Supported    | 25 MB                |
-| **WebP**     | `image/webp` | Supported    | 25 MB                |
-| **JPEG**     | `image/jpeg` | No Alpha     | 25 MB                |
+| Input Format | MIME Type                  | Transparency | Max Recommended Size |
+| :----------- | :------------------------- | :----------: | :------------------- |
+| **PNG**      | `image/png`                | Supported    | 25 MB                |
+| **WebP**     | `image/webp`               | Supported    | 25 MB                |
+| **JPEG**     | `image/jpeg`               | No Alpha     | 25 MB                |
+| **GIF**      | `image/gif`                | Supported    | 25 MB                |
+| **AVIF**     | `image/avif`               | Supported    | 25 MB                |
+| **BMP**      | `image/bmp`                | No Alpha     | 25 MB                |
+| **ICO**      | `image/x-icon`             | Supported    | 25 MB                |
+| **SVG**      | `image/svg+xml`            | Supported    | 25 MB                |
 
 ---
 

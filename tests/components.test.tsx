@@ -18,7 +18,7 @@ describe('UploadDropzone component', () => {
     render(<UploadDropzone sourceImage={null} onFileSelected={vi.fn()} onRemoveImage={vi.fn()} />);
 
     expect(screen.getByText(/Drop your image here/i)).toBeInTheDocument();
-    expect(screen.getByText(/PNG, WebP, or JPEG/i)).toBeInTheDocument();
+    expect(screen.getByText(/PNG, WebP, JPEG, GIF, AVIF, BMP, ICO, or SVG/i)).toBeInTheDocument();
   });
 
   it('renders loaded image information and replace/remove actions', () => {

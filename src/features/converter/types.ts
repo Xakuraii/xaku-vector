@@ -1,4 +1,13 @@
-export type SupportedMimeType = 'image/png' | 'image/webp' | 'image/jpeg';
+export type SupportedMimeType =
+  | 'image/png'
+  | 'image/webp'
+  | 'image/jpeg'
+  | 'image/gif'
+  | 'image/avif'
+  | 'image/bmp'
+  | 'image/x-icon'
+  | 'image/vnd.microsoft.icon'
+  | 'image/svg+xml';
 
 export type OutputFormat = 'image/webp' | 'image/png';
 

@@ -1,5 +1,14 @@
 import React from 'react';
-import { Info, ShieldCheck, HelpCircle, FileCode, CheckCircle2 } from 'lucide-react';
+import {
+  Info,
+  ShieldCheck,
+  HelpCircle,
+  FileCode,
+  CheckCircle2,
+  UploadCloud,
+  Sliders,
+  Eye,
+} from 'lucide-react';
 import { Card } from '../../../components/ui/Card';
 
 const SupportingSectionsComponent: React.FC = () => {
@@ -18,15 +27,15 @@ const SupportingSectionsComponent: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="p-6 space-y-3 relative overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-950/50 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center font-bold text-sm">
-              1
+            <div className="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-950/50 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center">
+              <UploadCloud className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-zinc-900 dark:text-white">
               1. Upload Your Image
             </h3>
             <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Drag and drop any PNG, WebP, or JPEG image directly into the workspace, click to
-              browse your disk, or press{' '}
+              Drag and drop any PNG, WebP, JPEG, GIF, AVIF, BMP, ICO, or SVG image directly into the
+              workspace, click to browse your disk, or press{' '}
               <kbd className="px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-[10px] font-mono">
                 Ctrl+V
               </kbd>{' '}
@@ -35,8 +44,8 @@ const SupportingSectionsComponent: React.FC = () => {
           </Card>
 
           <Card className="p-6 space-y-3 relative overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-sm">
-              2
+            <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+              <Sliders className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-zinc-900 dark:text-white">
               2. Select Size Target
@@ -49,8 +58,8 @@ const SupportingSectionsComponent: React.FC = () => {
           </Card>
 
           <Card className="p-6 space-y-3 relative overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm">
-              3
+            <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+              <Eye className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-zinc-900 dark:text-white">
               3. Preview &amp; Download
@@ -146,8 +155,8 @@ const SupportingSectionsComponent: React.FC = () => {
               What image formats can I upload?
             </h3>
             <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              You can upload PNG, WebP, and JPEG files up to 25 MB in size. Transparent alpha
-              channels in PNG and WebP files are fully preserved.
+              You can upload PNG, WebP, JPEG, GIF, AVIF, BMP, ICO, and SVG files up to 25 MB in size.
+              Transparent alpha channels in PNG, WebP, and GIF files are fully preserved.
             </p>
           </Card>
 
