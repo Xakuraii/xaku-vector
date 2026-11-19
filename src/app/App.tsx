@@ -32,7 +32,6 @@ export const App: React.FC = () => {
     copySuccess,
     downloadSuccess,
     loadUserFile,
-    loadSample,
     removeImage,
     updateSettings,
     reprocess,
@@ -79,7 +78,6 @@ export const App: React.FC = () => {
         sourceImage={sourceImage}
         onFileSelected={loadUserFile}
         onRemoveImage={removeImage}
-        onLoadSample={loadSample}
         errorMessage={errorMessage}
         warningMessage={warningMessage}
       />

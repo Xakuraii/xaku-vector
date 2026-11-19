@@ -7,7 +7,7 @@ import {
   ViewMode,
 } from '../types';
 import { DEFAULT_SETTINGS } from '../constants';
-import { loadImageFromFile, revokeImageSource, createSampleEmblem } from '../services/image-loader';
+import { loadImageFromFile, revokeImageSource } from '../services/image-loader';
 import { optimizeImageToSvg } from '../services/size-optimizer';
 
 export type ConverterStatus = 'idle' | 'loading' | 'optimizing' | 'success' | 'error';
@@ -121,35 +121,6 @@ export function useImageConverter() {
     },
     [triggerOptimization]
   );
-
-  const loadSample = useCallback(async () => {
-    const jobId = ++activeJobIdRef.current;
-    setStatus('loading');
-    setErrorMessage(null);
-    setWarningMessage(null);
-
-    try {
-      const sample = await createSampleEmblem();
-      if (jobId !== activeJobIdRef.current) {
-        revokeImageSource(sample);
-        return;
-      }
-
-      if (sourceImageRef.current) {
-        revokeImageSource(sourceImageRef.current);
-      }
-
-      sourceImageRef.current = sample;
-      setSourceImage(sample);
-      await triggerOptimization(sample, settingsRef.current);
-    } catch (err) {
-      if (jobId !== activeJobIdRef.current) return;
-      setStatus('error');
-      setErrorMessage(
-        err instanceof Error ? err.message : 'Failed to generate sample emblem image.'
-      );
-    }
-  }, [triggerOptimization]);
 
   const removeImage = useCallback(() => {
     activeJobIdRef.current++;
@@ -279,7 +250,6 @@ export function useImageConverter() {
     copySuccess,
     downloadSuccess,
     loadUserFile,
-    loadSample,
     removeImage,
     updateSettings,
     reprocess,

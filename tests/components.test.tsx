@@ -65,21 +65,16 @@ describe('UploadDropzone component', () => {
     expect(alert).toHaveTextContent('Corrupted file format');
   });
 
-  it('triggers onLoadSample when clicking try sample emblem button', () => {
-    const handleLoadSample = vi.fn();
+  it('does not render sample emblem button in empty dropzone', () => {
     render(
       <UploadDropzone
         sourceImage={null}
         onFileSelected={vi.fn()}
         onRemoveImage={vi.fn()}
-        onLoadSample={handleLoadSample}
       />
     );
 
-    const sampleBtn = screen.getByRole('button', { name: /Try sample emblem/i });
-    expect(sampleBtn).toBeInTheDocument();
-    fireEvent.click(sampleBtn);
-    expect(handleLoadSample).toHaveBeenCalledTimes(1);
+    expect(screen.queryByRole('button', { name: /Try sample emblem/i })).not.toBeInTheDocument();
   });
 });
 
