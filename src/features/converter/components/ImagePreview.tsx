@@ -1,4 +1,5 @@
 import React, { useMemo, useEffect } from 'react';
+import { Image as ImageIcon, FileCode } from 'lucide-react';
 import { ImageSourceData, OptimizationResult, PreviewBackground } from '../types';
 
 interface ImagePreviewProps {
@@ -6,6 +7,8 @@ interface ImagePreviewProps {
   sourceImage: ImageSourceData | null;
   result: OptimizationResult | null;
   zoom: number;
+  pan?: { x: number; y: number };
+  isDragging?: boolean;
   previewBg: PreviewBackground;
   isProcessing?: boolean;
 }
@@ -15,6 +18,8 @@ const ImagePreviewComponent: React.FC<ImagePreviewProps> = ({
   sourceImage,
   result,
   zoom,
+  pan = { x: 0, y: 0 },
+  isDragging = false,
   previewBg,
   isProcessing = false,
 }) => {
@@ -69,20 +74,32 @@ const ImagePreviewComponent: React.FC<ImagePreviewProps> = ({
       </div>
 
       {/* Center Image Rendering Container */}
-      <div className="my-auto flex items-center justify-center w-full h-72 sm:h-80 overflow-auto p-2">
+      <div className="my-auto flex items-center justify-center w-full h-72 sm:h-80 overflow-hidden p-2 select-none">
         {type === 'original' && originalSrc ? (
-          <img
-            src={originalSrc}
-            alt="Original input graphic"
-            decoding="async"
-            draggable={false}
-            style={{ transform: `scale(${zoom})` }}
-            className="max-h-full max-w-full object-contain transition-transform duration-150 select-none"
-          />
+          <div
+            style={{
+              transform: `translate3d(${pan.x}px, ${pan.y}px, 0) scale(${zoom})`,
+              transformOrigin: 'center center',
+              transition: isDragging ? 'none' : 'transform 150ms ease-out',
+            }}
+            className="w-full h-full flex items-center justify-center pointer-events-none select-none"
+          >
+            <img
+              src={originalSrc}
+              alt="Original input graphic"
+              decoding="async"
+              draggable={false}
+              className="max-h-full max-w-full object-contain select-none"
+            />
+          </div>
         ) : type === 'svg' && svgUrl ? (
           <div
-            style={{ transform: `scale(${zoom})` }}
-            className="w-full h-full flex items-center justify-center transition-transform duration-150 select-none"
+            style={{
+              transform: `translate3d(${pan.x}px, ${pan.y}px, 0) scale(${zoom})`,
+              transformOrigin: 'center center',
+              transition: isDragging ? 'none' : 'transform 150ms ease-out',
+            }}
+            className="w-full h-full flex items-center justify-center pointer-events-none select-none"
           >
             <img
               src={svgUrl}
@@ -96,23 +113,9 @@ const ImagePreviewComponent: React.FC<ImagePreviewProps> = ({
           <div className="text-center p-6 space-y-2 pointer-events-none select-none">
             <div className="w-10 h-10 mx-auto rounded-xl bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-500 dark:text-zinc-400">
               {type === 'original' ? (
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
+                <ImageIcon className="w-5 h-5 text-zinc-400 dark:text-zinc-500" />
               ) : (
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-                  />
-                </svg>
+                <FileCode className="w-5 h-5 text-zinc-400 dark:text-zinc-500" />
               )}
             </div>
             <div className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">

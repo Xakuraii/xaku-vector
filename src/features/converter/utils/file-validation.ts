@@ -2,7 +2,18 @@ import { MAX_FILE_SIZE_BYTES, SUPPORTED_MIME_TYPES } from '../constants';
 import { FileValidationResult } from '../types';
 import { formatBytes } from './format-utils';
 
-const SUPPORTED_EXTENSIONS = ['.png', '.webp', '.jpg', '.jpeg'];
+const SUPPORTED_EXTENSIONS = [
+  '.png',
+  '.webp',
+  '.jpg',
+  '.jpeg',
+  '.jfif',
+  '.gif',
+  '.avif',
+  '.bmp',
+  '.ico',
+  '.svg',
+];
 
 /**
  * Validates whether an uploaded File is acceptable for conversion.
@@ -41,7 +52,7 @@ export function validateImageFile(file: File | null | undefined): FileValidation
   if (!isMimeSupported && !hasSupportedExt) {
     return {
       valid: false,
-      error: `Unsupported file format. Please upload a PNG, WebP, or JPEG image. (Received: ${file.type || 'unknown format'})`,
+      error: `Unsupported file format. Please upload a PNG, WebP, JPEG, GIF, AVIF, BMP, ICO, or SVG image. (Received: ${file.type || 'unknown format'})`,
     };
   }
 

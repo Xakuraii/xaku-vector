@@ -32,6 +32,36 @@ describe('validateImageFile', () => {
     expect(result.valid).toBe(true);
   });
 
+  it('accepts valid GIF file', () => {
+    const file = new File(['dummy-bytes-data'], 'animation.gif', { type: 'image/gif' });
+    const result = validateImageFile(file);
+    expect(result.valid).toBe(true);
+  });
+
+  it('accepts valid AVIF file', () => {
+    const file = new File(['dummy-bytes-data'], 'picture.avif', { type: 'image/avif' });
+    const result = validateImageFile(file);
+    expect(result.valid).toBe(true);
+  });
+
+  it('accepts valid BMP file', () => {
+    const file = new File(['dummy-bytes-data'], 'bitmap.bmp', { type: 'image/bmp' });
+    const result = validateImageFile(file);
+    expect(result.valid).toBe(true);
+  });
+
+  it('accepts valid ICO file', () => {
+    const file = new File(['dummy-bytes-data'], 'favicon.ico', { type: 'image/x-icon' });
+    const result = validateImageFile(file);
+    expect(result.valid).toBe(true);
+  });
+
+  it('accepts valid SVG file', () => {
+    const file = new File(['<svg></svg>'], 'vector.svg', { type: 'image/svg+xml' });
+    const result = validateImageFile(file);
+    expect(result.valid).toBe(true);
+  });
+
   it('rejects unsupported files like txt or pdf', () => {
     const file = new File(['hello'], 'document.pdf', { type: 'application/pdf' });
     const result = validateImageFile(file);

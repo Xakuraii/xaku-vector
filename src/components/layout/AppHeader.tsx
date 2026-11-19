@@ -117,8 +117,8 @@ const AppHeaderComponent: React.FC<AppHeaderProps> = ({ targetKB }) => {
         {/* Right Actions */}
         <div className="flex items-center gap-2 sm:gap-2.5">
           {targetKB && (
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-100/90 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs font-medium shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-100/90 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs font-medium shadow-xs">
+              <Shield className="w-3.5 h-3.5 text-emerald-500" />
               <span className="text-zinc-500 dark:text-zinc-400">Budget:</span>
               <span className="font-semibold font-mono text-zinc-900 dark:text-zinc-100">
                 &lt; {targetKB} KB
@@ -148,7 +148,7 @@ const AppHeaderComponent: React.FC<AppHeaderProps> = ({ targetKB }) => {
               />
             </svg>
             <span>Star</span>
-            <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+            <Star className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400 group-hover:text-amber-500 transition-colors" />
           </a>
 
           {/* Theme Toggle Button */}
@@ -219,8 +219,8 @@ const AppHeaderComponent: React.FC<AppHeaderProps> = ({ targetKB }) => {
               {/* Target budget indicator in mobile menu if active */}
               {targetKB && (
                 <div className="flex items-center justify-between p-3 rounded-2xl bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800/80 text-xs">
-                  <span className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400 font-medium">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400 font-medium">
+                    <Shield className="w-3.5 h-3.5 text-emerald-500" />
                     Target Size Budget:
                   </span>
                   <span className="font-bold font-mono text-zinc-900 dark:text-zinc-100">
@@ -238,7 +238,7 @@ const AppHeaderComponent: React.FC<AppHeaderProps> = ({ targetKB }) => {
                   onClick={closeMobileMenu}
                   className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-2xl bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-900 font-semibold text-xs transition shadow-sm active:scale-[0.99] group"
                 >
-                  <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400 group-hover:scale-110 transition-transform" />
+                  <Star className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500 group-hover:text-amber-400 group-hover:scale-110 transition-all" />
                   <span>Star XakuVector on GitHub</span>
                 </a>
               </div>

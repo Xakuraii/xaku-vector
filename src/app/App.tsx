@@ -28,11 +28,16 @@ export const App: React.FC = () => {
     viewMode,
     previewBg,
     zoom,
+    pan,
+    setZoom,
+    setPan,
+    zoomIn,
+    zoomOut,
+    resetTransform,
     isInspectorOpen,
     copySuccess,
     downloadSuccess,
     loadUserFile,
-    loadSample,
     removeImage,
     updateSettings,
     reprocess,
@@ -79,7 +84,6 @@ export const App: React.FC = () => {
         sourceImage={sourceImage}
         onFileSelected={loadUserFile}
         onRemoveImage={removeImage}
-        onLoadSample={loadSample}
         errorMessage={errorMessage}
         warningMessage={warningMessage}
       />
@@ -113,10 +117,16 @@ export const App: React.FC = () => {
             viewMode={viewMode}
             previewBg={previewBg}
             zoom={zoom}
+            pan={pan}
             isProcessing={isProcessing}
             onViewModeChange={setViewMode}
             onPreviewBgChange={setPreviewBg}
             onToggleZoom={toggleZoom}
+            onZoomIn={zoomIn}
+            onZoomOut={zoomOut}
+            onResetTransform={resetTransform}
+            onZoomChange={setZoom}
+            onPanChange={setPan}
           />
         </div>
       </section>

@@ -1,6 +1,16 @@
 import { ConversionSettingsState, OptimizationPreset } from './types';
 
-export const SUPPORTED_MIME_TYPES = ['image/png', 'image/webp', 'image/jpeg'] as const;
+export const SUPPORTED_MIME_TYPES = [
+  'image/png',
+  'image/webp',
+  'image/jpeg',
+  'image/gif',
+  'image/avif',
+  'image/bmp',
+  'image/x-icon',
+  'image/vnd.microsoft.icon',
+  'image/svg+xml',
+] as const;
 
 export const MAX_FILE_SIZE_BYTES = 25 * 1024 * 1024; // 25 MB
 

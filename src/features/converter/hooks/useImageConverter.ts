@@ -7,7 +7,7 @@ import {
   ViewMode,
 } from '../types';
 import { DEFAULT_SETTINGS } from '../constants';
-import { loadImageFromFile, revokeImageSource, createSampleEmblem } from '../services/image-loader';
+import { loadImageFromFile, revokeImageSource } from '../services/image-loader';
 import { optimizeImageToSvg } from '../services/size-optimizer';
 
 export type ConverterStatus = 'idle' | 'loading' | 'optimizing' | 'success' | 'error';
@@ -24,6 +24,7 @@ export function useImageConverter() {
   const [viewMode, setViewMode] = useState<ViewMode>('split');
   const [previewBg, setPreviewBg] = useState<PreviewBackground>('checker');
   const [zoom, setZoom] = useState<number>(1);
+  const [pan, setPan] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [isInspectorOpen, setIsInspectorOpen] = useState<boolean>(false);
   const [copySuccess, setCopySuccess] = useState<boolean>(false);
   const [downloadSuccess, setDownloadSuccess] = useState<boolean>(false);
@@ -122,35 +123,6 @@ export function useImageConverter() {
     [triggerOptimization]
   );
 
-  const loadSample = useCallback(async () => {
-    const jobId = ++activeJobIdRef.current;
-    setStatus('loading');
-    setErrorMessage(null);
-    setWarningMessage(null);
-
-    try {
-      const sample = await createSampleEmblem();
-      if (jobId !== activeJobIdRef.current) {
-        revokeImageSource(sample);
-        return;
-      }
-
-      if (sourceImageRef.current) {
-        revokeImageSource(sourceImageRef.current);
-      }
-
-      sourceImageRef.current = sample;
-      setSourceImage(sample);
-      await triggerOptimization(sample, settingsRef.current);
-    } catch (err) {
-      if (jobId !== activeJobIdRef.current) return;
-      setStatus('error');
-      setErrorMessage(
-        err instanceof Error ? err.message : 'Failed to generate sample emblem image.'
-      );
-    }
-  }, [triggerOptimization]);
-
   const removeImage = useCallback(() => {
     activeJobIdRef.current++;
     if (sourceImageRef.current) {
@@ -163,6 +135,7 @@ export function useImageConverter() {
     setErrorMessage(null);
     setWarningMessage(null);
     setZoom(1);
+    setPan({ x: 0, y: 0 });
     setIsInspectorOpen(false);
   }, []);
 
@@ -247,15 +220,30 @@ export function useImageConverter() {
     }
   }, [result]);
 
+  const zoomIn = useCallback(() => {
+    setZoom((prev) => Math.min(8.0, Math.round(prev * 1.25 * 100) / 100));
+  }, []);
+
+  const zoomOut = useCallback(() => {
+    setZoom((prev) => Math.max(0.25, Math.round((prev / 1.25) * 100) / 100));
+  }, []);
+
+  const resetTransform = useCallback(() => {
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+  }, []);
+
   const toggleZoom = useCallback(() => {
     setZoom((prev) => {
+      if (prev >= 2.25) return 1;
       if (prev === 1) return 1.5;
       if (prev === 1.5) return 2.25;
       return 1;
     });
+    setPan({ x: 0, y: 0 });
   }, []);
 
-  const resetZoom = useCallback(() => setZoom(1), []);
+  const resetZoom = resetTransform;
 
   const toggleInspector = useCallback(() => {
     setIsInspectorOpen((prev) => !prev);
@@ -275,11 +263,16 @@ export function useImageConverter() {
     viewMode,
     previewBg,
     zoom,
+    pan,
+    setZoom,
+    setPan,
+    zoomIn,
+    zoomOut,
+    resetTransform,
     isInspectorOpen,
     copySuccess,
     downloadSuccess,
     loadUserFile,
-    loadSample,
     removeImage,
     updateSettings,
     reprocess,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, ExternalLink, ArrowUp, Heart, Code2 } from 'lucide-react';
+import { Star, ExternalLink, ArrowUp, Code2, ShieldCheck } from 'lucide-react';
 
 const AppFooterComponent: React.FC = () => {
   const scrollToTop = () => {
@@ -30,20 +30,20 @@ const AppFooterComponent: React.FC = () => {
                   Xaku<span className="text-red-600 dark:text-red-500">Vector</span>
                 </span>
                 <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-red-50 text-red-600 dark:bg-red-950/60 dark:text-red-400 border border-red-200 dark:border-red-900/50 rounded-md">
-                  v1.0.0
+                  v2.0.0
                 </span>
               </div>
             </div>
 
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-sm">
               A high-performance, privacy-first client-side utility for packaging raster images
-              (PNG, WebP, JPEG) into lightweight, standards-compliant SVG containers with strict
+              (PNG, WebP, JPEG, GIF, AVIF, BMP, ICO, SVG) into lightweight, standards-compliant SVG containers with strict
               byte budgeting down to 20 KB.
             </p>
 
             {/* Privacy & Operational status badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 text-xs font-medium text-emerald-700 dark:text-emerald-400">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
               <span>100% Client-Side Engine • Zero Server Uploads</span>
             </div>
           </div>
@@ -163,7 +163,7 @@ const AppFooterComponent: React.FC = () => {
                 className="flex items-center justify-center gap-2 w-full py-2.5 px-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-900 text-xs font-semibold transition hover:scale-[1.02] active:scale-[0.98] shadow-xs group"
                 aria-label="Star XakuVector on GitHub"
               >
-                <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400 group-hover:scale-110 transition-transform" />
+                <Star className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500 group-hover:text-amber-400 group-hover:scale-110 transition-all" />
                 <span>Star on GitHub</span>
                 <ExternalLink className="w-3 h-3 opacity-60 ml-0.5" />
               </a>
@@ -199,7 +199,7 @@ const AppFooterComponent: React.FC = () => {
             <span>Licensed under MIT.</span>
             <span>•</span>
             <span className="inline-flex items-center gap-1 text-zinc-700 dark:text-zinc-300">
-              Crafted with <Heart className="w-3 h-3 text-red-500 fill-red-500 inline" /> by{' '}
+              Crafted with <Code2 className="w-3.5 h-3.5 text-red-500 inline" /> by{' '}
               <a
                 href="https://github.com/Xakuraii"
                 target="_blank"

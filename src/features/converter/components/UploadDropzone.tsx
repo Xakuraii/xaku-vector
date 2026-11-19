@@ -5,7 +5,6 @@ import {
   RefreshCw,
   Trash2,
   AlertCircle,
-  Sparkles,
 } from 'lucide-react';
 import { ImageSourceData } from '../types';
 import { formatBytes, formatDimensions } from '../utils/format-utils';
@@ -15,7 +14,6 @@ interface UploadDropzoneProps {
   sourceImage: ImageSourceData | null;
   onFileSelected: (file: File) => void;
   onRemoveImage: () => void;
-  onLoadSample?: () => void;
   errorMessage?: string | null;
   warningMessage?: string | null;
 }
@@ -24,7 +22,6 @@ const UploadDropzoneComponent: React.FC<UploadDropzoneProps> = ({
   sourceImage,
   onFileSelected,
   onRemoveImage,
-  onLoadSample,
   errorMessage,
   warningMessage,
 }) => {
@@ -71,7 +68,7 @@ const UploadDropzoneComponent: React.FC<UploadDropzoneProps> = ({
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/png,image/webp,image/jpeg"
+        accept="image/png,image/webp,image/jpeg,image/gif,image/avif,image/bmp,image/x-icon,image/svg+xml,.png,.webp,.jpg,.jpeg,.jfif,.gif,.avif,.bmp,.ico,.svg"
         onChange={handleFileInputChange}
         className="hidden"
         aria-label="Upload image file"
@@ -155,7 +152,7 @@ const UploadDropzoneComponent: React.FC<UploadDropzoneProps> = ({
                 </button>
               </p>
               <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
-                PNG, WebP, or JPEG. Select a file to get started.
+                PNG, WebP, JPEG, GIF, AVIF, BMP, ICO, or SVG. Select a file to get started.
               </p>
             </div>
 
@@ -168,22 +165,6 @@ const UploadDropzoneComponent: React.FC<UploadDropzoneProps> = ({
                 to paste from clipboard
               </span>
             </div>
-
-            {onLoadSample && (
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onLoadSample();
-                  }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 text-xs font-semibold text-zinc-700 dark:text-zinc-200 transition-colors cursor-pointer shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                  <span>Try sample emblem</span>
-                </button>
-              </div>
-            )}
           </div>
         </div>
       )}

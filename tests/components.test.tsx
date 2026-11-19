@@ -18,7 +18,7 @@ describe('UploadDropzone component', () => {
     render(<UploadDropzone sourceImage={null} onFileSelected={vi.fn()} onRemoveImage={vi.fn()} />);
 
     expect(screen.getByText(/Drop your image here/i)).toBeInTheDocument();
-    expect(screen.getByText(/PNG, WebP, or JPEG/i)).toBeInTheDocument();
+    expect(screen.getByText(/PNG, WebP, JPEG, GIF, AVIF, BMP, ICO, or SVG/i)).toBeInTheDocument();
   });
 
   it('renders loaded image information and replace/remove actions', () => {
@@ -65,21 +65,16 @@ describe('UploadDropzone component', () => {
     expect(alert).toHaveTextContent('Corrupted file format');
   });
 
-  it('triggers onLoadSample when clicking try sample emblem button', () => {
-    const handleLoadSample = vi.fn();
+  it('does not render sample emblem button in empty dropzone', () => {
     render(
       <UploadDropzone
         sourceImage={null}
         onFileSelected={vi.fn()}
         onRemoveImage={vi.fn()}
-        onLoadSample={handleLoadSample}
       />
     );
 
-    const sampleBtn = screen.getByRole('button', { name: /Try sample emblem/i });
-    expect(sampleBtn).toBeInTheDocument();
-    fireEvent.click(sampleBtn);
-    expect(handleLoadSample).toHaveBeenCalledTimes(1);
+    expect(screen.queryByRole('button', { name: /Try sample emblem/i })).not.toBeInTheDocument();
   });
 });
 
@@ -286,6 +281,81 @@ describe('ComparisonWorkspace component', () => {
     fireEvent.click(screen.getByTitle(/Toggle preview zoom level/i));
     expect(handleToggleZoom).toHaveBeenCalledTimes(1);
   });
+
+  it('handles zoom in, zoom out, reset, and displays zoom level', () => {
+    const handleZoomIn = vi.fn();
+    const handleZoomOut = vi.fn();
+    const handleReset = vi.fn();
+
+    render(
+      <ComparisonWorkspace
+        sourceImage={null}
+        result={null}
+        viewMode="split"
+        previewBg="checker"
+        zoom={1.5}
+        pan={{ x: 10, y: 20 }}
+        isProcessing={false}
+        onViewModeChange={vi.fn()}
+        onPreviewBgChange={vi.fn()}
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
+        onResetTransform={handleReset}
+      />
+    );
+
+    // Zoom level indicator (1.5x)
+    expect(screen.getByText('1.5x')).toBeInTheDocument();
+
+    // Zoom in
+    fireEvent.click(screen.getByRole('button', { name: /Zoom in/i }));
+    expect(handleZoomIn).toHaveBeenCalledTimes(1);
+
+    // Zoom out
+    fireEvent.click(screen.getByRole('button', { name: /Zoom out/i }));
+    expect(handleZoomOut).toHaveBeenCalledTimes(1);
+
+    // Reset view button is visible when zoomed or panned
+    const resetBtn = screen.getByRole('button', { name: /Reset view/i });
+    expect(resetBtn).toBeInTheDocument();
+    fireEvent.click(resetBtn);
+    expect(handleReset).toHaveBeenCalledTimes(1);
+  });
+
+  it('supports right-click mouse drag and suppresses context menu for panning', () => {
+    const handlePanChange = vi.fn();
+
+    const { container } = render(
+      <ComparisonWorkspace
+        sourceImage={null}
+        result={null}
+        viewMode="split"
+        previewBg="checker"
+        zoom={1}
+        pan={{ x: 0, y: 0 }}
+        isProcessing={false}
+        onViewModeChange={vi.fn()}
+        onPreviewBgChange={vi.fn()}
+        onPanChange={handlePanChange}
+      />
+    );
+
+    const stage = container.querySelector('.touch-none');
+    expect(stage).toBeInTheDocument();
+
+    if (stage) {
+      // Right click drag (button 2)
+      fireEvent.mouseDown(stage, { button: 2, clientX: 100, clientY: 100 });
+      fireEvent.mouseMove(stage, { clientX: 150, clientY: 130 });
+      fireEvent.mouseUp(stage);
+
+      expect(handlePanChange).toHaveBeenCalledWith({ x: 50, y: 30 });
+
+      // Context menu prevented for smooth right-click panning
+      const notCancelled = fireEvent.contextMenu(stage);
+      expect(notCancelled).toBe(false);
+    }
+  });
 });
 
 describe('FileMetrics component', () => {
@@ -393,7 +463,7 @@ describe('AppFooter component', () => {
     const logoImg = screen.getByAltText(/XakuVector Dragon Logo/i);
     expect(logoImg).toBeInTheDocument();
     expect(logoImg).toHaveAttribute('src', '/favicon.svg');
-    expect(screen.getByText('v1.0.0')).toBeInTheDocument();
+    expect(screen.getByText('v2.0.0')).toBeInTheDocument();
 
     // Open source GitHub card
     expect(screen.getByText(/XakuVector is 100% free & open source/i)).toBeInTheDocument();
@@ -499,7 +569,7 @@ describe('AppFooter component', () => {
     const logoImg = screen.getByAltText(/XakuVector Dragon Logo/i);
     expect(logoImg).toBeInTheDocument();
     expect(logoImg).toHaveAttribute('src', '/favicon.svg');
-    expect(screen.getByText('v1.0.0')).toBeInTheDocument();
+    expect(screen.getByText('v2.0.0')).toBeInTheDocument();
 
     // Open source GitHub card
     expect(screen.getByText(/XakuVector is 100% free & open source/i)).toBeInTheDocument();
