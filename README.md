@@ -12,17 +12,17 @@
 
 ---
 
-## 🌟 Overview
+## Overview
 
 **XakuVector** is a high-performance, open-source web application designed to package raster artwork (logos, graphics, photos, illustrations) into standard W3C Scalable Vector Graphics (`.svg`) files with precision file-size budgets.
 
 Designed for designers, developers, and content creators who need to meet strict upload limits (such as Discord bots, asset marketplaces, email templates, or embedded web containers), XakuVector iteratively computes the highest visual quality that stays strictly within your specified kilobyte budget.
 
-> 🔒 **100% Client-Side Privacy:** All image decoding, canvas operations, compression, and XML generation happen locally in your browser. No files, metadata, or telemetry are ever uploaded to any external server.
+> **100% Client-Side Privacy:** All image decoding, canvas operations, compression, and XML generation happen locally in your browser. No files, metadata, or telemetry are ever uploaded to any external server.
 
 ---
 
-## ⚙️ How It Works: SVG Container vs. Vector Tracing
+## How It Works: SVG Container vs. Vector Tracing
 
 > [!IMPORTANT]
 > **XakuVector is an SVG raster container and byte-size optimization engine, NOT an automated bezier vector curve tracer.**
@@ -33,37 +33,38 @@ Designed for designers, developers, and content creators who need to meet strict
 
 ---
 
-## ✨ Features
+## Features
 
-- **⚡ Strict File Size Budgeting:**
+- **Strict File Size Budgeting:**
   - One-click presets: `< 50 KB` (Compact / Micro SVG), `< 150 KB` (Ultra Small), `< 300 KB` (Recommended), `< 500 KB` (High Fidelity), and `Max Quality` (Unrestricted).
   - Smooth 60fps fine-tune slider ranging from **20 KB up to 800 KB** with dynamic boundary warnings.
-- **🛡️ 100% Client-Side & Offline-Ready:** Zero server communication, zero tracking, zero accounts required. Works fully offline once loaded.
-- **🎨 Dual Raster Streams:**
+- **100% Client-Side & Offline-Ready:** Zero server communication, zero tracking, zero accounts required. Works fully offline once loaded.
+- **Dual Raster Streams:**
   - **WebP Stream:** Highest compression efficiency with full 8-bit alpha transparency. Downscales resolution automatically for micro-targets down to 20 KB.
   - **PNG Stream:** Lossless standard embedding for maximum legacy viewer and editor compatibility.
-- **🔍 Live Comparison Workspace:**
+- **Live Comparison Workspace:**
   - Interactive split view and SVG-only inspection mode.
-  - Multi-level zoom (`1x`, `1.5x`, `2.25x`).
+  - Multi-level and continuous zoom with mouse wheel and touch pinch-to-zoom.
+  - Free pan navigation via desktop right-click drag and mobile touch drag.
   - Adaptive transparency checkerboard, solid dark, and solid light background modes.
-- **📊 Real-Time File Telemetry:** Exact byte counts, original vs. generated size comparisons, reduction percentages, resolution scaling, and budget progress bars.
-- **📋 Export & Code Inspection:** Instant file download, one-click clipboard copy (`Copy SVG Code`), and syntax-highlighted raw SVG XML source code inspector.
-- **🌓 Modern UI & Complete Dark/Light Mode:** Minimalist, accessible interface with system theme auto-detection and persistence.
-- **📱 Fully Responsive:** Clean mobile experience with a dedicated, touch-friendly hamburger drawer navigation.
+- **Real-Time File Telemetry:** Exact byte counts, original vs. generated size comparisons, reduction percentages, resolution scaling, and budget progress bars.
+- **Export & Code Inspection:** Instant file download, one-click clipboard copy (`Copy SVG Code`), and syntax-highlighted raw SVG XML source code inspector.
+- **Modern UI & Complete Dark/Light Mode:** Minimalist, accessible interface with system theme auto-detection and persistence.
+- **Fully Responsive:** Clean mobile experience with a dedicated, touch-friendly hamburger drawer navigation.
 
 ---
 
-## 📁 Supported Formats
+## Supported Formats
 
 | Input Format | MIME Type    | Transparency | Max Recommended Size |
 | :----------- | :----------- | :----------: | :------------------- |
-| **PNG**      | `image/png`  | ✅ Supported | 25 MB                |
-| **WebP**     | `image/webp` | ✅ Supported | 25 MB                |
-| **JPEG**     | `image/jpeg` | ❌ No Alpha  | 25 MB                |
+| **PNG**      | `image/png`  | Supported    | 25 MB                |
+| **WebP**     | `image/webp` | Supported    | 25 MB                |
+| **JPEG**     | `image/jpeg` | No Alpha     | 25 MB                |
 
 ---
 
-## 🚀 Getting Started (Local Development)
+## Getting Started (Local Development)
 
 ### Prerequisites
 
@@ -90,7 +91,7 @@ Open your browser at `http://localhost:5173` to view the application.
 
 ---
 
-## 🛠️ Available Scripts
+## Available Scripts
 
 | Command              | Description                                                                         |
 | :------------------- | :---------------------------------------------------------------------------------- |
@@ -104,7 +105,7 @@ Open your browser at `http://localhost:5173` to view the application.
 
 ---
 
-## 🚢 Deployment Guide
+## Deployment Guide
 
 Because XakuVector is a 100% static client-side application, it can be deployed to any static hosting provider for free in minutes.
 
@@ -238,7 +239,7 @@ docker run -p 8080:80 xaku-vector
 
 ---
 
-## 🏛️ Architecture & Project Structure
+## Architecture & Project Structure
 
 ```text
 xaku-vector/
@@ -303,13 +304,13 @@ xaku-vector/
 
 ---
 
-## 👤 Author
+## Author
 
 - **Xakuraii** — [@Xakuraii](https://github.com/Xakuraii)
 
 ---
 
-## 📄 License
+## License
 
 This project is open-source and available under the [MIT License](LICENSE).
 Feel free to use, modify, and distribute it for personal or commercial projects.
@@ -317,5 +318,5 @@ Feel free to use, modify, and distribute it for personal or commercial projects.
 ---
 
 <p align="center">
-  If you find XakuVector useful, please consider giving it a ⭐ on <a href="https://github.com/Xakuraii/xaku-vector">GitHub</a>!
+  If you find XakuVector useful, please consider giving it a star on <a href="https://github.com/Xakuraii/xaku-vector">GitHub</a>!
 </p>
