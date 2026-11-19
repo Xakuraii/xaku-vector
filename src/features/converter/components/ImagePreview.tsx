@@ -7,6 +7,8 @@ interface ImagePreviewProps {
   sourceImage: ImageSourceData | null;
   result: OptimizationResult | null;
   zoom: number;
+  pan?: { x: number; y: number };
+  isDragging?: boolean;
   previewBg: PreviewBackground;
   isProcessing?: boolean;
 }
@@ -16,6 +18,8 @@ const ImagePreviewComponent: React.FC<ImagePreviewProps> = ({
   sourceImage,
   result,
   zoom,
+  pan = { x: 0, y: 0 },
+  isDragging = false,
   previewBg,
   isProcessing = false,
 }) => {
@@ -70,20 +74,32 @@ const ImagePreviewComponent: React.FC<ImagePreviewProps> = ({
       </div>
 
       {/* Center Image Rendering Container */}
-      <div className="my-auto flex items-center justify-center w-full h-72 sm:h-80 overflow-auto p-2">
+      <div className="my-auto flex items-center justify-center w-full h-72 sm:h-80 overflow-hidden p-2 select-none">
         {type === 'original' && originalSrc ? (
-          <img
-            src={originalSrc}
-            alt="Original input graphic"
-            decoding="async"
-            draggable={false}
-            style={{ transform: `scale(${zoom})` }}
-            className="max-h-full max-w-full object-contain transition-transform duration-150 select-none"
-          />
+          <div
+            style={{
+              transform: `translate3d(${pan.x}px, ${pan.y}px, 0) scale(${zoom})`,
+              transformOrigin: 'center center',
+              transition: isDragging ? 'none' : 'transform 150ms ease-out',
+            }}
+            className="w-full h-full flex items-center justify-center pointer-events-none select-none"
+          >
+            <img
+              src={originalSrc}
+              alt="Original input graphic"
+              decoding="async"
+              draggable={false}
+              className="max-h-full max-w-full object-contain select-none"
+            />
+          </div>
         ) : type === 'svg' && svgUrl ? (
           <div
-            style={{ transform: `scale(${zoom})` }}
-            className="w-full h-full flex items-center justify-center transition-transform duration-150 select-none"
+            style={{
+              transform: `translate3d(${pan.x}px, ${pan.y}px, 0) scale(${zoom})`,
+              transformOrigin: 'center center',
+              transition: isDragging ? 'none' : 'transform 150ms ease-out',
+            }}
+            className="w-full h-full flex items-center justify-center pointer-events-none select-none"
           >
             <img
               src={svgUrl}
