@@ -45,7 +45,7 @@ export const SvgCodeInspector: React.FC<SvgCodeInspectorProps> = ({
         {/* Actions Bar */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400 font-mono">
-            <Code2 className="w-4 h-4 text-red-500" />
+            <Code2 className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
             <span>{filename}.svg</span>
           </div>
 
@@ -71,7 +71,7 @@ export const SvgCodeInspector: React.FC<SvgCodeInspectorProps> = ({
             readOnly
             value={svgString}
             rows={14}
-            className="w-full p-4 font-mono text-[11px] leading-relaxed bg-transparent resize-y focus:outline-none focus:ring-1 focus:ring-red-500 text-zinc-300"
+            className="w-full p-4 font-mono text-[11px] leading-relaxed bg-transparent resize-y focus:outline-none focus:ring-1 focus:ring-zinc-500 text-zinc-300"
             aria-label="Generated SVG raw XML code"
           />
         </div>

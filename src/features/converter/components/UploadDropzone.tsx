@@ -78,8 +78,8 @@ const UploadDropzoneComponent: React.FC<UploadDropzoneProps> = ({
       {sourceImage ? (
         <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-950/60 border border-red-200 dark:border-red-900/40 flex items-center justify-center shrink-0">
-              <ImageIcon className="w-5 h-5 text-red-600 dark:text-red-400" />
+            <div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center shrink-0">
+              <ImageIcon className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
@@ -112,7 +112,7 @@ const UploadDropzoneComponent: React.FC<UploadDropzoneProps> = ({
               size="sm"
               onClick={onRemoveImage}
               aria-label="Remove image"
-              className="text-red-500 hover:text-red-600 dark:text-red-400"
+              className="text-zinc-500 hover:text-red-600 dark:text-zinc-400 dark:hover:text-red-400"
             >
               <Trash2 className="w-4 h-4" />
             </Button>
@@ -125,14 +125,14 @@ const UploadDropzoneComponent: React.FC<UploadDropzoneProps> = ({
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           onClick={triggerBrowse}
-          className={`relative rounded-2xl border-2 border-dashed p-6 sm:p-10 text-center cursor-pointer transition-all duration-200 focus-within:ring-2 focus-within:ring-red-500 ${
+          className={`relative rounded-2xl border-2 border-dashed p-6 sm:p-10 text-center cursor-pointer transition-all duration-200 focus-within:ring-2 focus-within:ring-zinc-500 ${
             isDragOver
-              ? 'border-red-500 bg-red-50/50 dark:bg-red-950/20 scale-[0.99]'
-              : 'border-zinc-300 dark:border-zinc-700/80 hover:border-red-500/80 dark:hover:border-red-500/80 bg-white/60 dark:bg-zinc-900/40 hover:bg-zinc-50 dark:hover:bg-zinc-900/70 shadow-sm'
+              ? 'border-zinc-500 bg-zinc-100/70 dark:bg-zinc-800/40 scale-[0.99]'
+              : 'border-zinc-300 dark:border-zinc-700/80 hover:border-zinc-500/80 dark:hover:border-zinc-500/80 bg-white/60 dark:bg-zinc-900/40 hover:bg-zinc-50 dark:hover:bg-zinc-900/70 shadow-sm'
           }`}
         >
           <div className="max-w-md mx-auto flex flex-col items-center space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-red-100/80 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 flex items-center justify-center text-red-600 dark:text-red-400">
+            <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-700 dark:text-zinc-300">
               <UploadCloud className="w-6 h-6" />
             </div>
 
@@ -146,7 +146,7 @@ const UploadDropzoneComponent: React.FC<UploadDropzoneProps> = ({
                     e.stopPropagation();
                     triggerBrowse();
                   }}
-                  className="text-red-600 dark:text-red-400 underline decoration-red-400/40 hover:decoration-red-400 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500 rounded"
+                  className="text-zinc-700 dark:text-zinc-300 underline decoration-zinc-400/60 hover:decoration-zinc-600 dark:hover:decoration-zinc-300 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-500 rounded"
                 >
                   choose from your device
                 </button>

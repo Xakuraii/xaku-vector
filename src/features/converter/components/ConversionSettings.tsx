@@ -157,7 +157,7 @@ const ConversionSettingsComponent: React.FC<ConversionSettingsProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3.5">
         <div className="flex items-center gap-2.5">
-          <Sliders className="w-4 h-4 text-red-600 dark:text-red-500" />
+          <Sliders className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
           <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">
             Conversion &amp; Size Budget
           </h2>
@@ -178,7 +178,7 @@ const ConversionSettingsComponent: React.FC<ConversionSettingsProps> = ({
           <span className="font-semibold text-zinc-800 dark:text-zinc-200">
             Target SVG File Size Budget:
           </span>
-          <span className="font-mono font-bold text-red-600 dark:text-red-400">
+          <span className="font-mono font-bold text-zinc-700 dark:text-zinc-300">
             {settings.preset === 'unrestricted'
               ? 'Unrestricted (Max Quality)'
               : `${localTargetKB} KB limit`}
@@ -193,9 +193,9 @@ const ConversionSettingsComponent: React.FC<ConversionSettingsProps> = ({
                 key={opt.id}
                 type="button"
                 onClick={() => handlePresetClick(opt.id, opt.targetKB)}
-                className={`p-2.5 rounded-xl border text-center transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 cursor-pointer ${
+                className={`p-2.5 rounded-xl border text-center transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 cursor-pointer ${
                   isSelected
-                    ? 'border-red-600 bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 shadow-sm ring-1 ring-red-600 font-semibold'
+                    ? 'border-zinc-600 dark:border-zinc-400 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm ring-1 ring-zinc-600 dark:ring-zinc-400 font-semibold'
                     : 'border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/40 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300'
                 }`}
               >
@@ -225,7 +225,7 @@ const ConversionSettingsComponent: React.FC<ConversionSettingsProps> = ({
               className={`font-mono font-bold px-2 py-0.5 rounded border shadow-xs ${
                 isAtMaxLimit
                   ? 'bg-amber-50 dark:bg-amber-950/50 border-amber-300 dark:border-amber-800 text-amber-600 dark:text-amber-400'
-                  : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-red-600 dark:text-red-400'
+                  : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200'
               }`}
             >
               {localTargetKB} KB
@@ -245,7 +245,7 @@ const ConversionSettingsComponent: React.FC<ConversionSettingsProps> = ({
             onMouseUp={handleTargetSliderRelease}
             onTouchEnd={handleTargetSliderRelease}
             onKeyUp={handleTargetSliderRelease}
-            className="w-full h-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg cursor-grab active:cursor-grabbing accent-red-600"
+            className="w-full h-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg cursor-grab active:cursor-grabbing accent-zinc-600 dark:accent-zinc-400"
             aria-label="Target maximum file size in kilobytes"
           />
         </div>
@@ -254,7 +254,7 @@ const ConversionSettingsComponent: React.FC<ConversionSettingsProps> = ({
           <span className="text-emerald-600 dark:text-emerald-400 font-semibold">20 KB (Min)</span>
           <span>50 KB</span>
           <span>150 KB</span>
-          <span className="text-red-600 dark:text-red-400 font-semibold">300 KB</span>
+          <span className="text-zinc-700 dark:text-zinc-300 font-semibold">300 KB</span>
           <span>500 KB</span>
           <span className={isAtMaxLimit ? 'text-amber-600 dark:text-amber-400 font-bold' : ''}>
             800 KB
@@ -289,15 +289,15 @@ const ConversionSettingsComponent: React.FC<ConversionSettingsProps> = ({
           <button
             type="button"
             onClick={() => handleFormatChange('image/webp')}
-            className={`flex flex-col text-left p-3 rounded-xl border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 cursor-pointer ${
+            className={`flex flex-col text-left p-3 rounded-xl border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 cursor-pointer ${
               isWebp
-                ? 'border-red-600 bg-red-50/60 dark:bg-red-950/30 ring-1 ring-red-600 shadow-sm'
+                ? 'border-zinc-600 dark:border-zinc-400 bg-zinc-100/80 dark:bg-zinc-800/70 ring-1 ring-zinc-600 dark:ring-zinc-400 shadow-sm'
                 : 'border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 bg-zinc-50/50 dark:bg-zinc-900/50'
             }`}
           >
             <div className="flex items-center justify-between w-full">
               <span className="text-xs font-bold text-zinc-900 dark:text-white">WebP Stream</span>
-              {isWebp && <Check className="w-4 h-4 text-red-600 dark:text-red-400" />}
+              {isWebp && <Check className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />}
             </div>
             <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 leading-normal">
               Optimal compression. Preserves alpha transparency while meeting tight targets down to
@@ -309,15 +309,15 @@ const ConversionSettingsComponent: React.FC<ConversionSettingsProps> = ({
           <button
             type="button"
             onClick={() => handleFormatChange('image/png')}
-            className={`flex flex-col text-left p-3 rounded-xl border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 cursor-pointer ${
+            className={`flex flex-col text-left p-3 rounded-xl border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 cursor-pointer ${
               !isWebp
-                ? 'border-red-600 bg-red-50/60 dark:bg-red-950/30 ring-1 ring-red-600 shadow-sm'
+                ? 'border-zinc-600 dark:border-zinc-400 bg-zinc-100/80 dark:bg-zinc-800/70 ring-1 ring-zinc-600 dark:ring-zinc-400 shadow-sm'
                 : 'border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 bg-zinc-50/50 dark:bg-zinc-900/50'
             }`}
           >
             <div className="flex items-center justify-between w-full">
               <span className="text-xs font-bold text-zinc-900 dark:text-white">PNG Stream</span>
-              {!isWebp && <Check className="w-4 h-4 text-red-600 dark:text-red-400" />}
+              {!isWebp && <Check className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />}
             </div>
             <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 leading-normal">
               Universal legacy SVG viewer compatibility. Optimizes via resolution downscaling.
@@ -335,18 +335,24 @@ const ConversionSettingsComponent: React.FC<ConversionSettingsProps> = ({
           >
             <span className="font-semibold">Manual Quality &amp; Scale Override</span>
           </label>
-          <input
-            id="manualOverrideCheckbox"
-            type="checkbox"
-            checked={!isAuto}
-            disabled={disabled}
-            onChange={(e) =>
-              flushChange({
-                mode: e.target.checked ? 'manual' : 'auto',
-              })
-            }
-            className="w-4 h-4 rounded text-red-600 focus:ring-red-600 border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800 cursor-pointer"
-          />
+          <div className="relative inline-flex items-center justify-center w-4 h-4 shrink-0">
+            <input
+              id="manualOverrideCheckbox"
+              type="checkbox"
+              checked={!isAuto}
+              disabled={disabled}
+              onChange={(e) =>
+                flushChange({
+                  mode: e.target.checked ? 'manual' : 'auto',
+                })
+              }
+              className="peer appearance-none w-4 h-4 rounded border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 checked:bg-zinc-700 dark:checked:bg-zinc-300 checked:border-zinc-700 dark:checked:border-zinc-300 hover:border-zinc-400 dark:hover:border-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 focus-visible:ring-offset-1 dark:focus-visible:ring-offset-zinc-950 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            />
+            <Check
+              className="w-3 h-3 text-white dark:text-zinc-950 pointer-events-none absolute opacity-0 peer-checked:opacity-100 transition-opacity stroke-[3]"
+              aria-hidden="true"
+            />
+          </div>
         </div>
 
         {!isAuto && (
@@ -357,7 +363,7 @@ const ConversionSettingsComponent: React.FC<ConversionSettingsProps> = ({
                 <span className="text-zinc-600 dark:text-zinc-400 font-medium">
                   {isWebp ? 'WebP Compression Quality' : 'PNG Compression (Lossless standard)'}
                 </span>
-                <span className="font-mono font-bold px-2 py-0.5 rounded bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-red-600 dark:text-red-400">
+                <span className="font-mono font-bold px-2 py-0.5 rounded bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200">
                   {isWebp ? `${localQuality}%` : '100%'}
                 </span>
               </div>
@@ -373,7 +379,7 @@ const ConversionSettingsComponent: React.FC<ConversionSettingsProps> = ({
                   onMouseUp={handleQualityRelease}
                   onTouchEnd={handleQualityRelease}
                   onKeyUp={handleQualityRelease}
-                  className="w-full h-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg cursor-grab active:cursor-grabbing accent-red-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full h-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg cursor-grab active:cursor-grabbing accent-zinc-600 dark:accent-zinc-400 disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-label="Manual compression quality percentage"
                 />
               </div>
@@ -390,7 +396,7 @@ const ConversionSettingsComponent: React.FC<ConversionSettingsProps> = ({
                 <span className="text-zinc-600 dark:text-zinc-400 font-medium">
                   Resolution Scale
                 </span>
-                <span className="font-mono font-bold px-2 py-0.5 rounded bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-red-600 dark:text-red-400">
+                <span className="font-mono font-bold px-2 py-0.5 rounded bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200">
                   {localScale}%
                 </span>
               </div>
@@ -405,7 +411,7 @@ const ConversionSettingsComponent: React.FC<ConversionSettingsProps> = ({
                   onMouseUp={handleScaleRelease}
                   onTouchEnd={handleScaleRelease}
                   onKeyUp={handleScaleRelease}
-                  className="w-full h-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg cursor-grab active:cursor-grabbing accent-red-600"
+                  className="w-full h-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg cursor-grab active:cursor-grabbing accent-zinc-600 dark:accent-zinc-400"
                   aria-label="Manual resolution scale percentage"
                 />
               </div>

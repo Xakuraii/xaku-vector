@@ -242,9 +242,9 @@ const ComparisonWorkspaceComponent: React.FC<ComparisonWorkspaceProps> = ({
               type="button"
               onClick={() => onViewModeChange('split')}
               aria-pressed={viewMode === 'split'}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 ${
                 viewMode === 'split'
-                  ? 'bg-white dark:bg-zinc-900 text-red-600 dark:text-red-400 shadow-sm'
+                  ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
                   : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100'
               }`}
             >
@@ -256,9 +256,9 @@ const ComparisonWorkspaceComponent: React.FC<ComparisonWorkspaceProps> = ({
               type="button"
               onClick={() => onViewModeChange('svg-only')}
               aria-pressed={viewMode === 'svg-only'}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 ${
                 viewMode === 'svg-only'
-                  ? 'bg-white dark:bg-zinc-900 text-red-600 dark:text-red-400 shadow-sm'
+                  ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
                   : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100'
               }`}
             >
@@ -270,9 +270,9 @@ const ComparisonWorkspaceComponent: React.FC<ComparisonWorkspaceProps> = ({
               type="button"
               onClick={() => onViewModeChange('original-only')}
               aria-pressed={viewMode === 'original-only'}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 ${
                 viewMode === 'original-only'
-                  ? 'bg-white dark:bg-zinc-900 text-red-600 dark:text-red-400 shadow-sm'
+                  ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
                   : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100'
               }`}
             >
@@ -291,7 +291,7 @@ const ComparisonWorkspaceComponent: React.FC<ComparisonWorkspaceProps> = ({
               type="button"
               onClick={handleZoomOut}
               disabled={activeZoom <= 0.25}
-              className="p-1.5 rounded-lg text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-white dark:hover:bg-zinc-900 transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600"
+              className="p-1.5 rounded-lg text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-white dark:hover:bg-zinc-900 transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
               title="Zoom out"
               aria-label="Zoom out"
             >
@@ -301,7 +301,7 @@ const ComparisonWorkspaceComponent: React.FC<ComparisonWorkspaceProps> = ({
             <button
               type="button"
               onClick={onToggleZoom ? onToggleZoom : handleResetTransform}
-              className="px-2.5 py-1 font-mono font-bold text-xs text-zinc-800 dark:text-zinc-200 hover:text-red-600 dark:hover:text-red-400 hover:bg-white dark:hover:bg-zinc-900 rounded-lg transition cursor-pointer"
+              className="px-2.5 py-1 font-mono font-bold text-xs text-zinc-800 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white hover:bg-white dark:hover:bg-zinc-900 rounded-lg transition cursor-pointer"
               title="Toggle preview zoom level"
               aria-label={`Current preview zoom is ${activeZoom}x. Click to toggle or reset.`}
             >
@@ -314,7 +314,7 @@ const ComparisonWorkspaceComponent: React.FC<ComparisonWorkspaceProps> = ({
               type="button"
               onClick={handleZoomIn}
               disabled={activeZoom >= 8.0}
-              className="p-1.5 rounded-lg text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-white dark:hover:bg-zinc-900 transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600"
+              className="p-1.5 rounded-lg text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-white dark:hover:bg-zinc-900 transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
               title="Zoom in"
               aria-label="Zoom in"
             >
@@ -325,7 +325,7 @@ const ComparisonWorkspaceComponent: React.FC<ComparisonWorkspaceProps> = ({
               <button
                 type="button"
                 onClick={handleResetTransform}
-                className="p-1.5 rounded-lg text-red-600 dark:text-red-400 hover:bg-white dark:hover:bg-zinc-900 transition cursor-pointer"
+                className="p-1.5 rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-white dark:hover:bg-zinc-900 transition cursor-pointer"
                 title="Reset view"
                 aria-label="Reset view"
               >
@@ -344,7 +344,7 @@ const ComparisonWorkspaceComponent: React.FC<ComparisonWorkspaceProps> = ({
               type="button"
               onClick={() => onPreviewBgChange('checker')}
               aria-pressed={previewBg === 'checker'}
-              className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 ${
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 ${
                 previewBg === 'checker'
                   ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm font-semibold'
                   : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white'
@@ -357,7 +357,7 @@ const ComparisonWorkspaceComponent: React.FC<ComparisonWorkspaceProps> = ({
               type="button"
               onClick={() => onPreviewBgChange('dark')}
               aria-pressed={previewBg === 'dark'}
-              className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 ${
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 ${
                 previewBg === 'dark'
                   ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm font-semibold'
                   : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white'
@@ -370,7 +370,7 @@ const ComparisonWorkspaceComponent: React.FC<ComparisonWorkspaceProps> = ({
               type="button"
               onClick={() => onPreviewBgChange('light')}
               aria-pressed={previewBg === 'light'}
-              className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 ${
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 ${
                 previewBg === 'light'
                   ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm font-semibold'
                   : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white'
@@ -432,7 +432,7 @@ const ComparisonWorkspaceComponent: React.FC<ComparisonWorkspaceProps> = ({
       {/* Navigation Helper Footer */}
       <div className="px-4 py-2 border-t border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-950/50 flex flex-wrap items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400 gap-2">
         <span className="flex items-center gap-1.5">
-          <Move className="w-3 h-3 text-red-500" />
+          <Move className="w-3 h-3 text-zinc-500 dark:text-zinc-400" />
           <span>Right-click or touch drag to pan everywhere</span>
         </span>
         <span>Scroll mouse or pinch hand to zoom • Double-click to reset</span>

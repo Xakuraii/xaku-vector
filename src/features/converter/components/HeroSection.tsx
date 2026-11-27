@@ -43,7 +43,7 @@ const BudgetRuler: React.FC<{ targetKB: number }> = ({ targetKB }) => {
           />
         ))}
         <span
-          className="absolute top-0 h-5 w-1 -translate-x-1/2 rounded-full bg-red-600 shadow-[0_0_0_3px_rgba(220,38,38,0.12)] dark:bg-red-500"
+          className="absolute top-0 h-5 w-1 -translate-x-1/2 rounded-full bg-zinc-700 shadow-[0_0_0_3px_rgba(113,113,122,0.18)] dark:bg-zinc-300 dark:shadow-[0_0_0_3px_rgba(161,161,170,0.18)]"
           style={{ left: `${rulerPosition(budget)}%` }}
         />
       </div>
@@ -60,7 +60,7 @@ const HeroSectionComponent: React.FC<HeroSectionProps> = ({ onConvertClick, targ
   return (
     <section className="text-center max-w-3xl mx-auto pt-4 pb-6 space-y-6">
       {/* Eyebrow */}
-      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 dark:bg-red-950/50 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-900/40 text-xs font-semibold">
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 text-xs font-semibold">
         <Cpu className="w-3.5 h-3.5" />
         <span>Runs entirely in your browser</span>
       </div>
@@ -68,7 +68,7 @@ const HeroSectionComponent: React.FC<HeroSectionProps> = ({ onConvertClick, targ
       {/* Headline */}
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-[1.12] text-balance">
         Package Images into SVG.{' '}
-        <span className="text-red-600 dark:text-red-500">With Strict Size Control.</span>
+        <span className="text-zinc-500 dark:text-zinc-400">With Strict Size Control.</span>
       </h1>
 
       {/* Description */}
