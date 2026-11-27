@@ -27,7 +27,7 @@ const SupportingSectionsComponent: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="p-6 space-y-3 relative overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-950/50 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 flex items-center justify-center">
               <UploadCloud className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-zinc-900 dark:text-white">
@@ -75,9 +75,9 @@ const SupportingSectionsComponent: React.FC = () => {
 
       {/* 2. What to Expect (Critical Technical Honesty) */}
       <section id="about" className="content-auto space-y-6">
-        <Card className="p-6 sm:p-8 border-l-4 border-l-red-600 space-y-4">
+        <Card className="p-6 sm:p-8 border-l-4 border-l-zinc-600 dark:border-l-zinc-400 space-y-4">
           <div className="flex items-center gap-2">
-            <FileCode className="w-5 h-5 text-red-600 dark:text-red-500" />
+            <FileCode className="w-5 h-5 text-zinc-600 dark:text-zinc-400" />
             <h2 className="text-lg sm:text-xl font-bold text-zinc-900 dark:text-white">
               What to Expect: Understanding the SVG Container
             </h2>
@@ -151,7 +151,7 @@ const SupportingSectionsComponent: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="p-5 space-y-2">
             <h3 className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-              <HelpCircle className="w-4 h-4 text-red-500 shrink-0" />
+              <HelpCircle className="w-4 h-4 text-zinc-500 dark:text-zinc-400 shrink-0" />
               What image formats can I upload?
             </h3>
             <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -162,7 +162,7 @@ const SupportingSectionsComponent: React.FC = () => {
 
           <Card className="p-5 space-y-2">
             <h3 className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-              <HelpCircle className="w-4 h-4 text-red-500 shrink-0" />
+              <HelpCircle className="w-4 h-4 text-zinc-500 dark:text-zinc-400 shrink-0" />
               Does this convert an image into vector paths?
             </h3>
             <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -174,7 +174,7 @@ const SupportingSectionsComponent: React.FC = () => {
 
           <Card className="p-5 space-y-2">
             <h3 className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-              <HelpCircle className="w-4 h-4 text-red-500 shrink-0" />
+              <HelpCircle className="w-4 h-4 text-zinc-500 dark:text-zinc-400 shrink-0" />
               Can I control the SVG file size?
             </h3>
             <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -186,7 +186,7 @@ const SupportingSectionsComponent: React.FC = () => {
 
           <Card className="p-5 space-y-2">
             <h3 className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-              <HelpCircle className="w-4 h-4 text-red-500 shrink-0" />
+              <HelpCircle className="w-4 h-4 text-zinc-500 dark:text-zinc-400 shrink-0" />
               Does reducing file size affect image quality?
             </h3>
             <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -198,7 +198,7 @@ const SupportingSectionsComponent: React.FC = () => {
 
           <Card className="p-5 space-y-2">
             <h3 className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-              <HelpCircle className="w-4 h-4 text-red-500 shrink-0" />
+              <HelpCircle className="w-4 h-4 text-zinc-500 dark:text-zinc-400 shrink-0" />
               Are my images uploaded to a server?
             </h3>
             <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -209,7 +209,7 @@ const SupportingSectionsComponent: React.FC = () => {
 
           <Card className="p-5 space-y-2">
             <h3 className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-              <HelpCircle className="w-4 h-4 text-red-500 shrink-0" />
+              <HelpCircle className="w-4 h-4 text-zinc-500 dark:text-zinc-400 shrink-0" />
               Which applications can open the resulting SVG?
             </h3>
             <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">

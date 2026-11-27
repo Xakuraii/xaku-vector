@@ -407,7 +407,7 @@ describe('AppHeader component', () => {
 
     const logoImg = screen.getByAltText(/XakuVector Dragon Logo/i);
     expect(logoImg).toBeInTheDocument();
-    expect(logoImg).toHaveAttribute('src', '/favicon.svg');
+    expect(logoImg).toHaveAttribute('src', '/XakuVector.svg');
     expect(screen.getByText('Xaku')).toBeInTheDocument();
     expect(screen.getByText('Vector')).toBeInTheDocument();
     expect(screen.getByText('SVG Engine')).toBeInTheDocument();
@@ -462,7 +462,7 @@ describe('AppFooter component', () => {
     // Brand and logo
     const logoImg = screen.getByAltText(/XakuVector Dragon Logo/i);
     expect(logoImg).toBeInTheDocument();
-    expect(logoImg).toHaveAttribute('src', '/favicon.svg');
+    expect(logoImg).toHaveAttribute('src', '/XakuVector.svg');
     expect(screen.getByText('v2.0.0')).toBeInTheDocument();
 
     // Open source GitHub card
@@ -568,7 +568,7 @@ describe('AppFooter component', () => {
     // Brand and logo
     const logoImg = screen.getByAltText(/XakuVector Dragon Logo/i);
     expect(logoImg).toBeInTheDocument();
-    expect(logoImg).toHaveAttribute('src', '/favicon.svg');
+    expect(logoImg).toHaveAttribute('src', '/XakuVector.svg');
     expect(screen.getByText('v2.0.0')).toBeInTheDocument();
 
     // Open source GitHub card

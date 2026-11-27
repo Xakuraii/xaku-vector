@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/favicon.svg" alt="XakuVector Logo" width="130" />
+  <img src="public/XakuVector.svg" alt="XakuVector Logo" width="130" />
 </p>
 
 <h1 align="center">XakuVector</h1>
@@ -249,7 +249,7 @@ docker run -p 8080:80 xaku-vector
 ```text
 xaku-vector/
 ├── public/
-│   └── favicon.svg              # Official XakuVector dragon emblem & favicon
+│   └── XakuVector.svg           # Official XakuVector logo & favicon
 ├── src/
 │   ├── app/
 │   │   └── App.tsx              # Application shell & state coordination

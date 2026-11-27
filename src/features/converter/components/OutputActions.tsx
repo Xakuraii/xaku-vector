@@ -44,10 +44,10 @@ const OutputActionsComponent: React.FC<OutputActionsProps> = ({
         disabled={!isAvailable}
         isLoading={isProcessing}
         onClick={onDownload}
-        className="w-full text-sm sm:text-base py-3.5 shadow-lg shadow-red-600/20"
+        className="w-full text-sm sm:text-base py-3.5 shadow-lg shadow-zinc-900/15 dark:shadow-black/30"
         leftIcon={
           downloadSuccess ? (
-            <Check className="w-5 h-5 text-emerald-300" />
+            <Check className="w-5 h-5 text-emerald-300 dark:text-emerald-600" />
           ) : (
             <Download className="w-5 h-5" />
           )
@@ -79,7 +79,7 @@ const OutputActionsComponent: React.FC<OutputActionsProps> = ({
           size="sm"
           disabled={!isAvailable}
           onClick={onInspect}
-          leftIcon={<Code className="w-4 h-4 text-red-500" />}
+          leftIcon={<Code className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />}
         >
           <span>Inspect SVG XML</span>
         </Button>

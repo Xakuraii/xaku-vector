@@ -29,7 +29,7 @@ const AppHeaderComponent: React.FC<AppHeaderProps> = ({ targetKB }) => {
       title: 'Converter Studio',
       subtitle: 'Convert images & control SVG file size',
       href: '#converter',
-      icon: <Sliders className="w-4 h-4 text-red-600 dark:text-red-400" />,
+      icon: <Sliders className="w-4 h-4 text-zinc-600 dark:text-zinc-300" />,
     },
     {
       title: 'How It Works',
@@ -53,30 +53,28 @@ const AppHeaderComponent: React.FC<AppHeaderProps> = ({ targetKB }) => {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-zinc-200/80 dark:border-zinc-800/80 bg-white/85 dark:bg-zinc-950/85 backdrop-blur-2xl transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3 sm:gap-4">
-        {/* Brand / Logo using User's Dragon Logo */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3 sm:gap-4">
+        {/* Brand / Logo */}
         <a
           href="#top"
           onClick={closeMobileMenu}
-          className="flex items-center gap-2.5 sm:gap-3.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 rounded-xl p-1 shrink-0"
+          className="flex items-center gap-2.5 sm:gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 rounded-xl p-1 shrink-0"
         >
-          <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/90 dark:border-zinc-800/90 p-1 sm:p-1.5 flex items-center justify-center shrink-0 shadow-xs transition-all duration-300 group-hover:scale-105 group-hover:border-red-500/50">
-            <img
-              src="/favicon.svg"
-              alt="XakuVector Dragon Logo"
-              width={44}
-              height={44}
-              decoding="async"
-              className="w-full h-full object-contain select-none transition-transform duration-300 group-hover:scale-105"
-            />
-          </div>
+          <img
+            src="/XakuVector.svg"
+            alt="XakuVector Dragon Logo"
+            width={48}
+            height={48}
+            decoding="async"
+            className="w-10 h-10 sm:w-12 sm:h-12 object-contain select-none shrink-0 transition-transform duration-300 group-hover:scale-105"
+          />
 
           <div>
             <div className="flex items-center gap-2">
               <span className="font-extrabold tracking-tight text-base sm:text-xl text-zinc-900 dark:text-white">
-                Xaku<span className="text-red-600 dark:text-red-500">Vector</span>
+                Xaku<span className="text-zinc-500 dark:text-zinc-400">Vector</span>
               </span>
-              <span className="hidden sm:inline-flex items-center px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-red-50 text-red-600 dark:bg-red-950/50 dark:text-red-400 border border-red-200 dark:border-red-900/50 rounded-md">
+              <span className="hidden sm:inline-flex items-center px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-zinc-100 text-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-md">
                 SVG Engine
               </span>
             </div>
@@ -157,7 +155,7 @@ const AppHeaderComponent: React.FC<AppHeaderProps> = ({ targetKB }) => {
             duration={400}
             theme={theme}
             onThemeChange={setTheme}
-            className="p-2 sm:p-2.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 cursor-pointer shadow-xs hover:scale-105 active:scale-95"
+            className="p-2 sm:p-2.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 cursor-pointer shadow-xs hover:scale-105 active:scale-95"
           />
 
           {/* Mobile Hamburger Toggle Button */}
@@ -166,10 +164,10 @@ const AppHeaderComponent: React.FC<AppHeaderProps> = ({ targetKB }) => {
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
             aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={isMobileMenuOpen}
-            className="md:hidden p-2 rounded-xl text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 cursor-pointer shadow-xs active:scale-95"
+            className="md:hidden p-2 rounded-xl text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 cursor-pointer shadow-xs active:scale-95"
           >
             {isMobileMenuOpen ? (
-              <X className="w-5 h-5 text-red-600 dark:text-red-500" />
+              <X className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
             ) : (
               <Menu className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />
             )}
@@ -203,7 +201,7 @@ const AppHeaderComponent: React.FC<AppHeaderProps> = ({ targetKB }) => {
                         {item.icon}
                       </div>
                       <div className="text-left">
-                        <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                        <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
                           {item.title}
                         </div>
                         <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -211,7 +209,7 @@ const AppHeaderComponent: React.FC<AppHeaderProps> = ({ targetKB }) => {
                         </div>
                       </div>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:text-red-600 dark:group-hover:text-red-400 group-hover:translate-x-0.5 transition-all" />
+                    <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 group-hover:translate-x-0.5 transition-all" />
                   </a>
                 ))}
               </nav>

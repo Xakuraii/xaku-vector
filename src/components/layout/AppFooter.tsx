@@ -14,22 +14,20 @@ const AppFooterComponent: React.FC = () => {
           {/* Col 1: Brand & Identity (5 columns on desktop) */}
           <div className="lg:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-1 flex items-center justify-center shrink-0 shadow-xs">
-                <img
-                  src="/favicon.svg"
-                  alt="XakuVector Dragon Logo"
-                  width={40}
-                  height={40}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full h-full object-contain select-none"
-                />
-              </div>
+              <img
+                src="/XakuVector.svg"
+                alt="XakuVector Dragon Logo"
+                width={48}
+                height={48}
+                loading="lazy"
+                decoding="async"
+                className="w-12 h-12 object-contain select-none shrink-0"
+              />
               <div className="flex items-center gap-2">
                 <span className="font-extrabold text-xl text-zinc-900 dark:text-white tracking-tight">
-                  Xaku<span className="text-red-600 dark:text-red-500">Vector</span>
+                  Xaku<span className="text-zinc-500 dark:text-zinc-400">Vector</span>
                 </span>
-                <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-red-50 text-red-600 dark:bg-red-950/60 dark:text-red-400 border border-red-200 dark:border-red-900/50 rounded-md">
+                <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-zinc-100 text-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-md">
                   v2.0.0
                 </span>
               </div>
@@ -57,7 +55,7 @@ const AppFooterComponent: React.FC = () => {
               <li>
                 <a
                   href="#converter"
-                  className="hover:text-red-600 dark:hover:text-red-400 transition"
+                  className="hover:text-zinc-900 dark:hover:text-white transition"
                 >
                   Image Converter
                 </a>
@@ -65,7 +63,7 @@ const AppFooterComponent: React.FC = () => {
               <li>
                 <a
                   href="#converter"
-                  className="hover:text-red-600 dark:hover:text-red-400 transition"
+                  className="hover:text-zinc-900 dark:hover:text-white transition"
                 >
                   Target Size Presets
                 </a>
@@ -73,7 +71,7 @@ const AppFooterComponent: React.FC = () => {
               <li>
                 <a
                   href="#converter"
-                  className="hover:text-red-600 dark:hover:text-red-400 transition"
+                  className="hover:text-zinc-900 dark:hover:text-white transition"
                 >
                   WebP &amp; PNG Streams
                 </a>
@@ -81,7 +79,7 @@ const AppFooterComponent: React.FC = () => {
               <li>
                 <a
                   href="#converter"
-                  className="hover:text-red-600 dark:hover:text-red-400 transition"
+                  className="hover:text-zinc-900 dark:hover:text-white transition"
                 >
                   Live Split Comparison
                 </a>
@@ -89,7 +87,7 @@ const AppFooterComponent: React.FC = () => {
               <li>
                 <a
                   href="#converter"
-                  className="hover:text-red-600 dark:hover:text-red-400 transition"
+                  className="hover:text-zinc-900 dark:hover:text-white transition"
                 >
                   SVG Code Inspector
                 </a>
@@ -106,28 +104,28 @@ const AppFooterComponent: React.FC = () => {
               <li>
                 <a
                   href="#how-it-works"
-                  className="hover:text-red-600 dark:hover:text-red-400 transition"
+                  className="hover:text-zinc-900 dark:hover:text-white transition"
                 >
                   How It Works
                 </a>
               </li>
               <li>
-                <a href="#about" className="hover:text-red-600 dark:hover:text-red-400 transition">
+                <a href="#about" className="hover:text-zinc-900 dark:hover:text-white transition">
                   Technical Architecture
                 </a>
               </li>
               <li>
-                <a href="#about" className="hover:text-red-600 dark:hover:text-red-400 transition">
+                <a href="#about" className="hover:text-zinc-900 dark:hover:text-white transition">
                   Raster vs Vector
                 </a>
               </li>
               <li>
-                <a href="#faq" className="hover:text-red-600 dark:hover:text-red-400 transition">
+                <a href="#faq" className="hover:text-zinc-900 dark:hover:text-white transition">
                   Format FAQ
                 </a>
               </li>
               <li>
-                <a href="#faq" className="hover:text-red-600 dark:hover:text-red-400 transition">
+                <a href="#faq" className="hover:text-zinc-900 dark:hover:text-white transition">
                   Browser Compatibility
                 </a>
               </li>
@@ -143,7 +141,7 @@ const AppFooterComponent: React.FC = () => {
             <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 space-y-3 shadow-xs">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
-                  <Code2 className="w-4 h-4 text-red-600 dark:text-red-500" />
+                  <Code2 className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
                   <span>GitHub Repository</span>
                 </span>
                 <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
@@ -173,7 +171,7 @@ const AppFooterComponent: React.FC = () => {
                   href="https://github.com/Xakuraii/xaku-vector/issues"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-red-600 dark:hover:text-red-400 transition"
+                  className="hover:text-zinc-900 dark:hover:text-white transition"
                 >
                   Report an issue
                 </a>
@@ -182,7 +180,7 @@ const AppFooterComponent: React.FC = () => {
                   href="https://github.com/Xakuraii"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-red-600 dark:hover:text-red-400 transition"
+                  className="hover:text-zinc-900 dark:hover:text-white transition"
                 >
                   @Xakuraii
                 </a>
@@ -199,12 +197,12 @@ const AppFooterComponent: React.FC = () => {
             <span>Licensed under MIT.</span>
             <span>•</span>
             <span className="inline-flex items-center gap-1 text-zinc-700 dark:text-zinc-300">
-              Crafted with <Code2 className="w-3.5 h-3.5 text-red-500 inline" /> by{' '}
+              Crafted with <Code2 className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400 inline" /> by{' '}
               <a
                 href="https://github.com/Xakuraii"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-zinc-900 dark:text-white hover:text-red-600 dark:hover:text-red-400 transition underline underline-offset-2"
+                className="font-semibold text-zinc-900 dark:text-white hover:text-zinc-900 dark:hover:text-white transition underline underline-offset-2"
               >
                 Xakuraii
               </a>
@@ -228,7 +226,7 @@ const AppFooterComponent: React.FC = () => {
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-300 dark:hover:border-zinc-700 transition shadow-xs cursor-pointer active:scale-95"
               aria-label="Scroll back to top of page"
             >
-              <ArrowUp className="w-3.5 h-3.5 text-red-600 dark:text-red-500" />
+              <ArrowUp className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
               <span className="font-medium">Top</span>
             </button>
           </div>
